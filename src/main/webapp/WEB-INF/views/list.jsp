@@ -15,6 +15,9 @@
 		color: navy;
 		
 	}
+	.list{
+		border:1px solid black;
+	}
 </style>
 </head>
 
@@ -53,7 +56,7 @@
 <!-- </table> -->
 <%-- </c:if> --%>
 
-<table border="1" width="700" cellpadding="2" cellspacing="2" align="center"> 
+<table class="list" border="1" width="700" cellpadding="2" cellspacing="2" align="center"> 
     <tr height="30" > 
       <td align="center"  width="50"  >번 호</td> 
       <td align="center"  width="250" >제   목</td> 

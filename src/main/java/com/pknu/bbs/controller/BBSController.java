@@ -86,6 +86,7 @@ public class BBSController {
 //	value값은 method를 요청하지 않을 경우 굳이 안써도 된다
 	@RequestMapping(value="/write.bbs", method=RequestMethod.POST)
 	public String write(/*HttpServletRequest req*/BBSDto article, HttpSession session) {
+//		매개변수로 DTO를 받아오면  Spring에서는 저절로 jsp에 있는 값중 DTO에 있는 파라미터와 일치하는 값이 저절로 DTO 안에 값이 넣어진체 넘어온다. 		
 		System.out.println(article);
 		article.setId((String)session.getAttribute("id"));
 		try {
@@ -140,15 +141,18 @@ public class BBSController {
 	}
 	
 	@RequestMapping(value="/replyForm.bbs")
-	public String replyForm(HttpServletRequest req, String pageNum, String depth, String pos, String groupId) {
-		BBSDto bd = new BBSDto();
-		bd.setDepth(Integer.parseInt(/*req.getParameter("depth")*/depth));
-		bd.setPos(Integer.parseInt(/*req.getParameter("pos")*/pos));
-		bd.setGroupId(Integer.parseInt(/*req.getParameter("groupId")*/groupId));
-		req.setAttribute("replyDto", bd);
-		req.setAttribute("pageNum", pageNum);
-		System.out.println("뎁스 : " + bd.getDepth());
-		System.out.println(bd);
+	public String replyForm(BBSDto bd, Model model,/*HttpServletRequest req, */String pageNum/*, String depth, String pos, String groupId*/) {
+		/*BBSDto bd = new BBSDto();
+		bd.setDepth(Integer.parseInt(req.getParameter("depth")depth));
+		bd.setPos(Integer.parseInt(req.getParameter("pos")pos));
+		bd.setGroupId(Integer.parseInt(req.getParameter("groupId")groupId));
+		*/
+		/*req.setAttribute("replyDto", bd);
+		req.setAttribute("pageNum", pageNum);*/
+		/*System.out.println("뎁스 : " + bd.getDepth());
+		System.out.println(bd);*/
+		model.addAttribute("replyDto", bd);
+		model.addAttribute("pageNum", pageNum);
 		return "replyForm"; 
 	}
 	
