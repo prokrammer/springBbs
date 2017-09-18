@@ -9,7 +9,7 @@
 <body>
 	${id }님...환영합니다<br />
 	<form action="/bbs/logout.bbs" method="post">
-	<input type="hidden" name="pageNum" value="${pageNum}">		 
+		<input type="hidden" name="pageNum" value="${pageNum}">		 
 		<button id="logout">로그아웃</button>
 	</form>
 	

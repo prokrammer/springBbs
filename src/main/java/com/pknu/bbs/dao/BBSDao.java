@@ -3,6 +3,7 @@ package com.pknu.bbs.dao;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 
@@ -13,7 +14,7 @@ public interface BBSDao {
 
 	int getTotalCount() throws SQLException, IOException;
 
-	ArrayList<BBSDto> getArticleList(int startRow, int endRow) throws SQLException;
+	List<BBSDto> getArticleList(int startRow, int endRow) throws SQLException;
 	
 	BBSDto getContent(String articleNum) throws SQLException;
 	

@@ -8,5 +8,5 @@ import org.springframework.ui.Model;
 import com.pknu.bbs.dto.BBSDto;
 
 public interface BBSService {
-	public void list(String pageNum, Model model);
+	public void list(int pageNum, Model model);
 }

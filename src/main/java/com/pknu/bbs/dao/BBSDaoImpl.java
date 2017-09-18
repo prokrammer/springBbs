@@ -6,13 +6,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.pknu.bbs.comment.CommentDto;
 import com.pknu.bbs.dto.BBSDto;
+import com.pknu.bbs.mapper.ListRowMapper;
 
 @Repository
 public class BBSDaoImpl implements BBSDao {
@@ -24,41 +28,23 @@ public class BBSDaoImpl implements BBSDao {
 	ArrayList<LoginDto> loginArrayList;
 	LoginDto logindto;
 	ArrayList<CommentDto> comArrayList;
+	StringBuffer query;
+	@Autowired
+	JdbcTemplate jdbcTemplate;
 	
-/*	public ArrayList<BBSDto> list() throws SQLException {
-		con = odbc.getConnection();
+	public List<BBSDto> getArticleList(int startRow, int endRow){
 		StringBuffer sql = new StringBuffer(); 
-		sql.append("select obbs.* from bbs");
+		sql.append("select obbs.* ");
+		sql.append("from (select rownum rum, ibbs.* ");
+		sql.append("	  from (select article_num,id,title,depth,hit,write_date ");
+		sql.append("			from bbs ");
+		sql.append("			order by group_id desc, pos) ibbs ");
+		sql.append(") obbs ");
+		sql.append("where rum between ? and ? ");
 		
-		
-		pstmt = con.prepareStatement(sql.toString());
-		pstmt.setInt(1, 1);
-		pstmt.setInt(2, 1);
-		rs = pstmt.executeQuery();
-		bdtoArrayList = new ArrayList<>();
-//		System.out.println(rs);
-		
-		while(rs.next()) {
-			BBSDto bbsd = new BBSDto();
-			bbsd.setArticleNum(rs.getInt("article_num"));
-			bbsd.setId(rs.getString("id"));
-			bbsd.setTitle(rs.getString("title"));
-			bbsd.setContent(rs.getString("content"));
-			bbsd.setDepth(rs.getInt("depth"));
-			bbsd.setHit(rs.getInt("hit"));
-			bbsd.setGroupid(rs.getInt("group_id"));
-			bbsd.setPos(rs.getInt("pos"));
-			bbsd.setWriteDate(rs.getTimestamp("write_date"));
-			bbsd.setFname(rs.getString("fname"));
-			bdtoArrayList.add(bbsd);
-//			System.out.println(bbsd);
-		}
-//		System.out.println(bdtoArrayList);
-		rs.close();
-		pstmt.close();
-		return bdtoArrayList;
-	}*/
-	public ArrayList<BBSDto> getArticleList(int startRow, int endRow) throws SQLException {
+		return jdbcTemplate.query(sql.toString(), new Object[]{startRow,endRow}, new ListRowMapper());
+	}
+	/*public ArrayList<BBSDto> getArticleList(int startRow, int endRow) throws SQLException {
 		con = odbc.getConnection();
 		StringBuffer sql = new StringBuffer(); 
 		sql.append("select obbs.* ");
@@ -95,9 +81,9 @@ public class BBSDaoImpl implements BBSDao {
 //		System.out.println(bdtoArrayList);
 		streamClose();		
 		return bdtoArrayList;
-	}
+	}*/
 	public void write(BBSDto article) throws ServletException, IOException{
-		con = odbc.getConnection();
+/*		con = odbc.getConnection();
 		
 		BBSDto bsd = article; 
 		String sql = "insert into bbs values(ARTICLE_NUM_SEQUENCE.NEXTVAL,?,?,?,0,0,ARTICLE_NUM_SEQUENCE.CURRVAL,0,sysdate,?)";
@@ -114,11 +100,19 @@ public class BBSDaoImpl implements BBSDao {
 			streamClose();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		}*/
+		query= new StringBuffer();		
+		
+		query.append("INSERT INTO BBS ");	
+		query.append("values(ARTICLE_NUM_SEQUENCE.NEXTVAL,?,?,?,0,0,");	
+		query.append("ARTICLE_NUM_SEQUENCE.CURRVAL,0,sysdate,?)");
+		jdbcTemplate.update(query.toString(), 
+							new Object[]{article.getId(),article.getTitle(),
+									article.getContent(),article.getFname()});
 	}
 	
 	public int getTotalCount() throws SQLException {
-		con = odbc.getConnection();
+		/*con = odbc.getConnection();
 		String sql = "SELECT COUNT(*) FROM BBS";
 		pstmt = con.prepareStatement(sql);
 		rs = pstmt.executeQuery();
@@ -128,11 +122,12 @@ public class BBSDaoImpl implements BBSDao {
 			totalCount = rs.getInt(1);
 		}
 		streamClose();
-		return totalCount;
+		return totalCount;*/
+		return jdbcTemplate.queryForObject("select count(*) from bbs", Integer.class);
 	}
 
 	public int loginCheck(String id, String pass) throws SQLException {
-		con = odbc.getConnection();
+		/*con = odbc.getConnection();
 		String sql = "SELECT pass FROM login WHERE id = ? ";
 		pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, id);
@@ -148,7 +143,24 @@ public class BBSDaoImpl implements BBSDao {
 			result = LoginStatus.LOGIN_NOTFOUNDID;
 		}
 		streamClose();
-		return result;
+		return result;*/
+		StringBuffer query= new StringBuffer();
+		query.append("SELECT PASS FROM LOGIN WHERE ID=? ");
+		int loginStatus =0;
+		List<String> dbPass=jdbcTemplate.queryForList(query.toString(),new Object[]{id}, 
+													  String.class);
+								
+		if(dbPass.size()==1){
+			if(pass.equals(dbPass.get(0))){
+				loginStatus=LoginStatus.LOGIN_SUCCESS;				
+			}else{
+				loginStatus=LoginStatus.LOGIN_FAIL;
+			}			
+		}else{
+			loginStatus=LoginStatus.LOGIN_NOTFOUNDID;
+		}		
+			
+		return loginStatus;
 	}
 
 	public BBSDto getContent(String articleNum) throws SQLException{

@@ -35,7 +35,8 @@
 	    </tr>
 	    <tr>
 	      <td><input type="submit" value="글쓰기"></td>
-	      <td><input type="reset" value="글쓰기취소"></td>	      	 
+	      <td><input type="reset" value="글쓰기취소">&nbsp<input type="button" value="목록으로" onclick="document.location.href='/bbs/list.bbs?pageNum=${pageNum}'"></td>	
+	            	 
 	    </tr>		
 	</table>	
 </form>

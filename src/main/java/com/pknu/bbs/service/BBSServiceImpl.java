@@ -32,14 +32,14 @@ public class BBSServiceImpl implements BBSService {
 	
 	
 	@Override
-	public void list(String pageNum, Model model) {
+	public void list(int pageNum, Model model) {
 		int totalCount=0;
 		ArrayList<BBSDto> articleList=null;
 		HashMap<String, String> pagingMap=null;
 		
 		try {
 			totalCount = bbsDao.getTotalCount();
-			pagingMap = page.paging(Integer.parseInt(pageNum), totalCount, pageSize, pageBlock);
+			pagingMap = page.paging(pageNum, totalCount, pageSize, pageBlock);
 			articleList = (ArrayList<BBSDto>)bbsDao.getArticleList(page.getStartRow(),page.getEndRow());
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
