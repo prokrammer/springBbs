@@ -2,7 +2,6 @@ package com.pknu.bbs.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,12 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.pknu.bbs.comment.BBSComment;
 import com.pknu.bbs.content.BBSContent;
-import com.pknu.bbs.dao.BBSDao;
-import com.pknu.bbs.dao.BBSDaoImpl;
-import com.pknu.bbs.dao.LoginStatus;
 import com.pknu.bbs.dto.BBSDto;
 import com.pknu.bbs.join.BBSJoin;
 import com.pknu.bbs.login.BBSLogin;
@@ -50,7 +47,6 @@ public class BBSController {
 	
 	@Autowired
 	private BBSReply bbsreply;
-	
 	@RequestMapping(value="/list.bbs")
 		public String list(String pageNum, Model model) {
 		/*model.addAttribute("articleList",bbsService.getArticles(pageNum));
@@ -79,7 +75,7 @@ public class BBSController {
 		return "redirect:list.bbs?pageNum=1";
 	}
 	
-	@RequestMapping(value="/writeForm.bbs")
+	@RequestMapping(value="write.bbs", method=RequestMethod.GET)
 	public String writeForm(HttpSession session, HttpServletRequest req) {
 		if((String)session.getAttribute("id")==null){
 			req.setAttribute("pageNum", "1");
@@ -87,11 +83,13 @@ public class BBSController {
 		}
 		return "writeForm";
 	}
-	
-	@RequestMapping(value="/write.bbs")
-	public String write(HttpServletRequest req) {
+//	value값은 method를 요청하지 않을 경우 굳이 안써도 된다
+	@RequestMapping(value="/write.bbs", method=RequestMethod.POST)
+	public String write(/*HttpServletRequest req*/BBSDto article, HttpSession session) {
+		System.out.println(article);
+		article.setId((String)session.getAttribute("id"));
 		try {
-			bbswrite.write(req);
+			bbswrite.write(article);
 		} catch (ServletException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -102,7 +100,8 @@ public class BBSController {
 		return "redirect:list.bbs?pageNum=1";
 	}
 	@RequestMapping(value="/content.bbs")
-	public String content(String pageNum, String articleNum, Model model) {
+	public String content(@RequestParam("pageNum") String pageNum, 
+			@RequestParam String articleNum, Model model) {
 		bbscontent.content(pageNum, articleNum, model);
 		return "content";
 	}
@@ -165,7 +164,7 @@ public class BBSController {
 		return "redirect:list.bbs?pageNum="+pageNum;
 	}
 	
-	@RequestMapping(value="/login.bbs")
+	@RequestMapping(value="/login.bbs", method=RequestMethod.POST)
 	public String login(HttpServletRequest req) {
 			
 		String view=null;

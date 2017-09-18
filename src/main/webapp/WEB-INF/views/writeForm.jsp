@@ -6,7 +6,7 @@
 <title>글쓰기</title>
 </head>
 <body>
-<form action="/bbs/write.bbs" method="post" enctype="multipart/form-data">
+<form action="/bbs/write.bbs" method="post"><!-- enctype="multipart/form-data"을 일시적으로 빼놓았다  -->
 <input type="hidden" name="pageNum" value="${pageNum}">
 	<table border="2" width="200">  
 		<tr>

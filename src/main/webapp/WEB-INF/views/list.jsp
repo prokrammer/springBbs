@@ -7,13 +7,22 @@
 <head>
 <meta charset="utf-8">
 <title>게시판</title> 
+<style>
+	table tr td a{
+		text-decoration: none;
+	}
+	table tr td a:visited {
+		color: navy;
+		
+	}
+</style>
 </head>
 
 <body>
 
 <c:if test="${result!=null}">
 	<script>
-		alert($("{result}");
+		alert($("{result}"));
 	</script>
 </c:if>
  <c:if test="${id!=null}">
@@ -29,7 +38,7 @@
 <table width="700" >
   <tr>
     <td align="right" >
-       <a href="/bbs/writeForm.bbs">글쓰기</a>
+       <a href="/bbs/write.bbs">글쓰기</a>
     </td>
   </tr>
 </table>

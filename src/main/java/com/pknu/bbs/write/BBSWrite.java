@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import com.pknu.bbs.dto.BBSDto;
+
 public interface BBSWrite {
-	String write(HttpServletRequest req) throws ServletException, IOException;
+	String write(BBSDto article) throws ServletException, IOException;
 }

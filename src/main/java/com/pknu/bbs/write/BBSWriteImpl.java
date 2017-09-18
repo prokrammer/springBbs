@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +26,16 @@ public class BBSWriteImpl implements BBSWrite {
 	@Resource(name="saveDir") //type이 String인 빈을 DI해준다 그중에서 id->name->class 순으로 "pageSize"인 녀석을 DI한다.
 	String saveDir;
 	
-	public String write(HttpServletRequest req) throws ServletException, IOException {
-		
-		req.setCharacterEncoding("UTF-8");
+	public String write(BBSDto article) throws ServletException, IOException {
+		System.out.println(article);
+/*		req.setCharacterEncoding("UTF-8");
 		
 		
 		BBSDto article = new BBSDto();
 		
-		article.setTitle(/*readParameterValue(req.getPart("title"))*/req.getParameter("title"));
-		article.setContent(/*readParameterValue(req.getPart("content"))*/req.getParameter("content"));
-		article.setId((String)req.getSession().getAttribute("id"));
+		article.setTitle(readParameterValue(req.getPart("title"))req.getParameter("title"));
+		article.setContent(readParameterValue(req.getPart("content"))req.getParameter("content"));
+		article.setId((String)req.getSession().getAttribute("id"));*/
 //		article.setFname(req.getParameter("fname"));
 		
 		//fileInputStream이 fileReader보다 빠를 경우 -> text파일이 아닌 2진 파일일 경우
