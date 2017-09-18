@@ -20,7 +20,7 @@ public class ListRowMapper implements RowMapper {
 		article.setDepth(rs.getInt("depth"));
 		article.setHit(rs.getInt("hit"));			
 		article.setWriteDate(rs.getTimestamp("write_date"));		
-	
+	 
 		return article;		
 	}
 	
