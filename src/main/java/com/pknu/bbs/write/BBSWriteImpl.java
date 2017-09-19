@@ -23,9 +23,9 @@ public class BBSWriteImpl implements BBSWrite {
 	@Autowired
 	BBSDao bbsdao;
 	
-	@Resource(name="saveDir") //type이 String인 빈을 DI해준다 그중에서 id->name->class 순으로 "pageSize"인 녀석을 DI한다.
-	String saveDir;
-	
+//	@Resource(name="saveDir") //type이 String인 빈을 DI해준다 그중에서 id->name->class 순으로 "pageSize"인 녀석을 DI한다.
+//	String saveDir;
+//	
 	public String write(BBSDto article) throws ServletException, IOException {
 		System.out.println(article);
 /*		req.setCharacterEncoding("UTF-8");

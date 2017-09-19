@@ -11,15 +11,14 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.orm.ibatis.SqlMapClientTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.pknu.bbs.comment.CommentDto;
 import com.pknu.bbs.dto.BBSDto;
-import com.pknu.bbs.mapper.ContentRowMapper;
-import com.pknu.bbs.mapper.ListRowMapper;
 
 
 @Repository
@@ -36,83 +35,83 @@ public class BBSDaoImpl implements BBSDao {
 	HashMap paramMap;
 	
 	@Autowired
-	JdbcTemplate jdbcTemplate;
-	
-	@Autowired
-	SqlMapClientTemplate smct;
+	SqlSessionTemplate seqSession;
 	
 	@Override
 	public int getTotalCount() {
 //		return (Integer)smct.queryForObject("getArticleCount");
-		return (int)smct.queryForObject("getArticleCount");
+		return seqSession.selectOne("getTotalCount");
+		
+//		return (int)seqSession.queryForObject("getArticleCount");
 	}
 	
+	@Override
 	public List<BBSDto> getArticleList(int startRow, int endRow){
 		paramMap = new HashMap<>();
 		paramMap.put("startRow", startRow);
 		paramMap.put("endRow", endRow);
-		return smct.queryForList("getArticleList", paramMap);/*jdbcTemplate.query(sql.toString(), new Object[]{startRow,endRow}, new ListRowMapper())*/
+		return seqSession.selectList("getArticleList", paramMap);/*jdbcTemplate.query(sql.toString(), new Object[]{startRow,endRow}, new ListRowMapper())*/
 	}
-	public int loginCheck(String id, String pass) throws SQLException {
-		int loginStatus =0;
-		String dbPass = (String)smct.queryForObject("login", id);
-								
-		if(dbPass!=null){
-			if(pass.equals(dbPass)){
-				loginStatus=LoginStatus.LOGIN_SUCCESS;				
-			}else{
-				loginStatus=LoginStatus.LOGIN_FAIL;
-			}			
-		}else{
-			loginStatus=LoginStatus.LOGIN_NOTFOUNDID;
-		}		
-			
-		return loginStatus;
-	}
-	public void write(BBSDto article) throws ServletException, IOException{
-		smct.insert("write", article);
-	}
-	
-	
-
-
-	
-	@Override
-	public BBSDto getContent(String articleNum) {
-		
-		BBSDto article = (BBSDto)smct.queryForObject("getContent",articleNum);
-		int comment=0;
-		try {
-			comment = commentsCount(Integer.parseInt(articleNum));
-		} catch (NumberFormatException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		long x = (long)comment;
-		article.setCommentCount(x);
-		return article;
-	}	
-	
-	@Override
-	public void reply(BBSDto article) {
-		paramMap.put("pos", article.getPos());
-		paramMap.put("groupId", article.getGroupId());
-		
-		smct.update("posUpdate", paramMap);
-
-		System.out.println(article);
-		smct.insert("reply", article);
-		
-	}
-	
-	@Override
-	public void delete(String articleNum) throws SQLException{
-		smct.delete("deleteArticle", articleNum);
-	}
-
-	public BBSDto getUpdateArticle(String articleNum) throws SQLException{
-		return (BBSDto)smct.queryForObject("getUpdateArticle",articleNum);
-	}
+//	public int loginCheck(String id, String pass) throws SQLException {
+//		int loginStatus =0;
+//		String dbPass = (String)seqSession.queryForObject("login", id);
+//								
+//		if(dbPass!=null){
+//			if(pass.equals(dbPass)){
+//				loginStatus=LoginStatus.LOGIN_SUCCESS;				
+//			}else{
+//				loginStatus=LoginStatus.LOGIN_FAIL;
+//			}			
+//		}else{
+//			loginStatus=LoginStatus.LOGIN_NOTFOUNDID;
+//		}		
+//			
+//		return loginStatus;
+//	}
+//	public void write(BBSDto article) throws ServletException, IOException{
+//		seqSession.insert("write", article);
+//	}
+//	
+//	
+//
+//
+//	
+//	@Override
+//	public BBSDto getContent(String articleNum) {
+//		
+//		BBSDto article = (BBSDto)seqSession.queryForObject("getContent",articleNum);
+//		int comment=0;
+//		try {
+//			comment = commentsCount(Integer.parseInt(articleNum));
+//		} catch (NumberFormatException | SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		long x = (long)comment;
+//		article.setCommentCount(x);
+//		return article;
+//	}	
+//	
+//	@Override
+//	public void reply(BBSDto article) {
+//		paramMap.put("pos", article.getPos());
+//		paramMap.put("groupId", article.getGroupId());
+//		
+//		seqSession.update("posUpdate", paramMap);
+//
+//		System.out.println(article);
+//		seqSession.insert("reply", article);
+//		
+//	}
+//	
+//	@Override
+//	public void delete(String articleNum) throws SQLException{
+//		seqSession.delete("deleteArticle", articleNum);
+//	}
+//
+//	public BBSDto getUpdateArticle(String articleNum) throws SQLException{
+//		return (BBSDto)seqSession.queryForObject("getUpdateArticle",articleNum);
+//	}
 
 	public void getUpdateArticle(String articleNum, String title, String content) throws SQLException {
 		System.out.println(articleNum + title + content);
@@ -121,7 +120,7 @@ public class BBSDaoImpl implements BBSDao {
 		paramMap.put("title",title);
 		paramMap.put("content", content);
 		
-		smct.update("updateArticle", paramMap);
+		seqSession.update("updateArticle", paramMap);
 		
 	}
 
@@ -269,5 +268,35 @@ public class BBSDaoImpl implements BBSDao {
 		}
 		streamClose();		
 		return comArrayList;
+	}
+
+	@Override
+	public BBSDto getContent(String articleNum) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void write(BBSDto article) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(String articleNum) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public BBSDto getUpdateArticle(String articleNum) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void reply(BBSDto article) throws SQLException {
+		// TODO Auto-generated method stub
+		
 	}
 }
