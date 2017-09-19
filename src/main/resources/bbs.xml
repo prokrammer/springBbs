@@ -4,5 +4,53 @@
 
 	<sqlMap>
 		<typeAlias alias="article" type="com.pknu.bbs.dto.BBSDto"/>
+		<typeAlias alias="logindto" type="com.pknu.bbs.dao.LoginDto"/>
 		<select id="getArticleCount" resultClass="int">select count(*) from bbs</select>
+		
+		<select id="getArticleList" parameterClass="HashMap" resultClass="article">
+		select obbs.* 
+		from (select rownum rum, ibbs.*  
+		from (select article_num articleNum,id,title,depth,hit,write_date writeDate  
+		from bbs  
+		order by group_id desc, pos) ibbs 
+		) obbs 
+		where rum between #startRow# and #endRow# 
+		</select>
+<!-- 		article이라는 alias에 있는 값과 불러오는 값이 일치해야 한다 -->
+<!-- 		만약 데이터베이스에 article_num이라는 속성이 dto에서 articleNum이라면 alias를 줘서 article_num articleNum -->
+<!-- 		이라고 명시해야 한다. -->
+		<select id="login" parameterClass="String" resultClass="String">
+		SELECT PASS FROM LOGIN WHERE ID=#id#
+		</select>
+		<insert id="write" parameterClass="article">
+		INSERT INTO BBS 	
+		values(ARTICLE_NUM_SEQUENCE.NEXTVAL,#id#,#title#,#content#,0,0,ARTICLE_NUM_SEQUENCE.CURRVAL,0,sysdate,#fname#)
+		</insert>
+		<select id="getContent" parameterClass="String" resultClass="article">
+			SELECT article_num articleNum, id, title, content, depth, 
+				   hit, group_id groupId, pos, write_date writeDate, fname 
+			FROM bbs 
+			WHERE article_num=#articleNum#
+		</select>
+		<update id="posUpdate">
+			update bbs 
+			set pos = pos + 1 
+			where pos > #pos# and group_id = #groupId#
+		</update>
+		<insert id="reply" parameterClass="article">
+			insert into bbs values(ARTICLE_NUM_SEQUENCE.NEXTVAL,#id#,#title#,#content#,#depth# + 1,0,#groupId#,#pos# + 1,sysdate,#fname#)
+		</insert>
+		<delete id="deleteArticle" parameterClass="String">
+		delete from bbs where article_num = #articleNum#
+		</delete>
+		<select id="getUpdateArticle" parameterClass="String" resultClass="article">
+		SELECT TITLE, CONTENT, ARTICLE_NUM articleNum FROM BBS WHERE ARTICLE_NUM=#articleNum#
+		</select>
+		
+		<update id="updateArticle" parameterClass="HashMap">
+		update bbs 
+		set title = #title#, content = #content# 
+		where article_Num = #articleNum#
+		</update>
+		
 	</sqlMap>

@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -32,6 +33,7 @@ public class BBSDaoImpl implements BBSDao {
 	LoginDto logindto;
 	ArrayList<CommentDto> comArrayList;
 	StringBuffer query;
+	HashMap paramMap;
 	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
@@ -45,58 +47,18 @@ public class BBSDaoImpl implements BBSDao {
 		return (int)smct.queryForObject("getArticleCount");
 	}
 	
-	/*public int getTotalCount() throws SQLException {
-		con = odbc.getConnection();
-		String sql = "SELECT COUNT(*) FROM BBS";
-		pstmt = con.prepareStatement(sql);
-		rs = pstmt.executeQuery();
-		int totalCount = 0;
-		
-		if(rs.next()) {
-			totalCount = rs.getInt(1);
-		}
-		streamClose();
-		return totalCount;
-		return jdbcTemplate.queryForObject("select count(*) from bbs", Integer.class);
-	}*/
-	
 	public List<BBSDto> getArticleList(int startRow, int endRow){
-		StringBuffer sql = new StringBuffer(); 
-		sql.append("select obbs.* ");
-		sql.append("from (select rownum rum, ibbs.* ");
-		sql.append("	  from (select article_num,id,title,depth,hit,write_date ");
-		sql.append("			from bbs ");
-		sql.append("			order by group_id desc, pos) ibbs ");
-		sql.append(") obbs ");
-		sql.append("where rum between ? and ? ");
-		
-		return jdbcTemplate.query(sql.toString(), new Object[]{startRow,endRow}, new ListRowMapper());
+		paramMap = new HashMap<>();
+		paramMap.put("startRow", startRow);
+		paramMap.put("endRow", endRow);
+		return smct.queryForList("getArticleList", paramMap);/*jdbcTemplate.query(sql.toString(), new Object[]{startRow,endRow}, new ListRowMapper())*/
 	}
-	
-	public void write(BBSDto article) throws ServletException, IOException{
-
-		query= new StringBuffer();		
-		
-		query.append("INSERT INTO BBS ");	
-		query.append("values(ARTICLE_NUM_SEQUENCE.NEXTVAL,?,?,?,0,0,");	
-		query.append("ARTICLE_NUM_SEQUENCE.CURRVAL,0,sysdate,?)");
-		jdbcTemplate.update(query.toString(), 
-							new Object[]{article.getId(),article.getTitle(),
-									article.getContent(),article.getFname()});
-	}
-	
-	
-
 	public int loginCheck(String id, String pass) throws SQLException {
-
-		StringBuffer query= new StringBuffer();
-		query.append("SELECT PASS FROM LOGIN WHERE ID=? ");
 		int loginStatus =0;
-		List<String> dbPass=jdbcTemplate.queryForList(query.toString(),new Object[]{id}, 
-													  String.class);
+		String dbPass = (String)smct.queryForObject("login", id);
 								
-		if(dbPass.size()==1){
-			if(pass.equals(dbPass.get(0))){
+		if(dbPass!=null){
+			if(pass.equals(dbPass)){
 				loginStatus=LoginStatus.LOGIN_SUCCESS;				
 			}else{
 				loginStatus=LoginStatus.LOGIN_FAIL;
@@ -107,94 +69,60 @@ public class BBSDaoImpl implements BBSDao {
 			
 		return loginStatus;
 	}
+	public void write(BBSDto article) throws ServletException, IOException{
+		smct.insert("write", article);
+	}
+	
+	
+
+
 	
 	@Override
-	public BBSDto getContent(String articleNum) {		
-		StringBuffer query= new StringBuffer();
-		query.append("SELECT * FROM bbs WHERE article_num=? ");
-		return jdbcTemplate.queryForObject(query.toString(), new Object[]{articleNum}, 
-				new ContentRowMapper());
+	public BBSDto getContent(String articleNum) {
+		
+		BBSDto article = (BBSDto)smct.queryForObject("getContent",articleNum);
+		int comment=0;
+		try {
+			comment = commentsCount(Integer.parseInt(articleNum));
+		} catch (NumberFormatException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		long x = (long)comment;
+		article.setCommentCount(x);
+		return article;
 	}	
 	
-	public void reply(BBSDto article) throws SQLException{
-con = odbc.getConnection();
+	@Override
+	public void reply(BBSDto article) {
+		paramMap.put("pos", article.getPos());
+		paramMap.put("groupId", article.getGroupId());
+		
+		smct.update("posUpdate", paramMap);
 
-		BBSDto bsd = article;
-		int result;
+		System.out.println(article);
+		smct.insert("reply", article);
 		
-		StringBuffer query = new StringBuffer();
-		
-		query.append("update bbs ");
-		query.append("set pos = pos + 1 ");
-		query.append("where pos > ? and group_id = ?");
-		pstmt = con.prepareStatement(query.toString());
-		pstmt.setInt(1, bsd.getPos());
-		pstmt.setInt(2, bsd.getGroupId());
-		result = pstmt.executeUpdate();
-		
-		System.out.println(result + "행이 입력되었습니다.");
-		
-		String sql = "insert into bbs values(ARTICLE_NUM_SEQUENCE.NEXTVAL,?,?,?,? + 1,0,?,? + 1,sysdate,?)";
-		pstmt = con.prepareStatement(sql);
-		pstmt.setString(1, bsd.getId());
-		pstmt.setString(2, bsd.getTitle());
-		pstmt.setString(3, bsd.getContent());
-		pstmt.setInt(4, bsd.getDepth());
-		pstmt.setInt(5, bsd.getGroupId());
-		pstmt.setInt(6, bsd.getPos());
-		pstmt.setString(7, bsd.getFname());
-			
-		result = pstmt.executeUpdate();
-			
-		System.out.println(result + "행이 입력되었습니다.");
-		
-		streamClose();
 	}
-
+	
+	@Override
 	public void delete(String articleNum) throws SQLException{
-		con = odbc.getConnection();
-		StringBuffer sql = new StringBuffer();
-		sql.append("delete from bbs where article_num = ?");
-		
-		pstmt = con.prepareStatement(sql.toString());
-		pstmt.setString(1, articleNum);
-		
-		int result = pstmt.executeUpdate();
-		System.out.println(result + "행이 삭제되었습니다.");
-		streamClose();
+		smct.delete("deleteArticle", articleNum);
 	}
 
 	public BBSDto getUpdateArticle(String articleNum) throws SQLException{
-		con = odbc.getConnection();
-		StringBuffer query;
-		query = new StringBuffer();
-		query.append("SELECT TITLE, CONTENT FROM BBS WHERE ARTICLE_NUM=?");
-		pstmt=con.prepareStatement(query.toString());
-		pstmt.setString(1, articleNum);
-		rs=pstmt.executeQuery();
-		BBSDto article = new BBSDto();
-		if(rs.next()){
-			article= new BBSDto();		
-			article.setArticleNum(Integer.parseInt(articleNum));
-			article.setTitle(rs.getString("title"));
-			article.setContent(rs.getString("content"));				
-		}
-		streamClose();
-		return article;
+		return (BBSDto)smct.queryForObject("getUpdateArticle",articleNum);
 	}
 
 	public void getUpdateArticle(String articleNum, String title, String content) throws SQLException {
-		con = odbc.getConnection();
-		StringBuffer sql = new StringBuffer();
-		sql.append("update bbs ");
-		sql.append("set title = ?, content = ? ");
-		sql.append("where article_Num = ?");
-		pstmt = con.prepareStatement(sql.toString());
-		pstmt.setString(1, title);
-		pstmt.setString(2, content);
-		pstmt.setString(3, articleNum);
-		pstmt.executeUpdate();
-		streamClose();
+		System.out.println(articleNum + title + content);
+		paramMap = new HashMap<>();
+		paramMap.put("articleNum", articleNum);
+		paramMap.put("title",title);
+		paramMap.put("content", content);
+		
+		smct.update("updateArticle", paramMap);
+		
 	}
 
 	public String join(String id, String pass) throws SQLException {

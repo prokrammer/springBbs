@@ -91,7 +91,12 @@ function showHtml(data,commPageNum){
 }
 </script>
 </head>
-<body>   
+<body> 
+
+${pageNum }<br/>
+뎁스 : ${depth }<br/>
+그룹아이디 : ${groupId }<br/>
+그룹아이디 : ${article.groupId }<br/>  
    <form action="/bbs/replyForm.bbs" method="post">      
     <input type="hidden" name="pageNum" value="${pageNum}">                 
     <input type="hidden" name="depth" value="${article.depth}">

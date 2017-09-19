@@ -9,7 +9,9 @@
 <body> 
 뎁스:${replyDto.depth }<br>
 포지션:${replyDto.pos }<br>
-페이지넘:${pageNum }
+페이지넘:${pageNum }<br>
+그룹아이디:${replyDto.groupId }
+
 <form action="/bbs/reply.bbs" method="post">
 	<input type="hidden" name="pageNum" value="${pageNum}">                 
     <input type="hidden" name="depth" value="${replyDto.depth}">

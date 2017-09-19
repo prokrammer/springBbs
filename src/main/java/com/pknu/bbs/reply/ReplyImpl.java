@@ -46,7 +46,7 @@ public class ReplyImpl implements BBSReply {
 		article.setContent(/*readParameterValue(req.getPart("content"))*/content);
 		article.setId(/*(String)req.getSession().getAttribute("id")*/id);
 //		article.setFname(req.getParameter("fname"));
-		
+		System.out.println(article);
 		//fileInputStream이 fileReader보다 빠를 경우 -> text파일이 아닌 2진 파일일 경우
 		/*if(req.getPart("fname").getSize()!=0) {
 			Part filePart = req.getPart("fname");
