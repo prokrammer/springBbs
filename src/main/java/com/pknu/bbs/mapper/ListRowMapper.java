@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import com.pknu.bbs.dao.BBSDao;
 import com.pknu.bbs.dto.BBSDto;
 
 public class ListRowMapper implements RowMapper {
@@ -20,7 +21,6 @@ public class ListRowMapper implements RowMapper {
 		article.setDepth(rs.getInt("depth"));
 		article.setHit(rs.getInt("hit"));			
 		article.setWriteDate(rs.getTimestamp("write_date"));		
-		
 		return article;		
 	}
 	

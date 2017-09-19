@@ -47,10 +47,7 @@ public class BBSServiceImpl implements BBSService {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		model.addAttribute("totalCount",totalCount);
 		model.addAttribute("articleList",articleList);
 		model.addAttribute("pageCode",pagingMap.get("pageCode"));

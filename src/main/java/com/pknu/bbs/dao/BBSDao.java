@@ -12,7 +12,7 @@ import com.pknu.bbs.dto.BBSDto;
 
 public interface BBSDao {
 
-	int getTotalCount() throws SQLException, IOException;
+	int getTotalCount();
 
 	List<BBSDto> getArticleList(int startRow, int endRow) throws SQLException;
 	
@@ -33,4 +33,5 @@ public interface BBSDao {
 	void getUpdateArticle(String articleNum, String title, String content) throws SQLException;
 	
 	void reply(BBSDto article) throws SQLException;
+	
 }

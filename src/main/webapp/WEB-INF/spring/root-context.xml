@@ -18,6 +18,7 @@
 	<bean id="saveDir" class="java.lang.String">
 		<constructor-arg value="d:\uploadKch\"></constructor-arg>
 	</bean>
+<!-- 	스프링 2.5이후에 생성자 사용방법은 Deprecated 되었음 -->
 	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<constructor-arg >
 			<list>
@@ -27,12 +28,23 @@
 			</list>
 		</constructor-arg>
 	</bean> -->
+<!-- 	DriverManagerDataSource는 커넥션 풀을 지원하지 않음. 개발이 끝나면 BasicDataSource로 바꾼다.-->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:XE"></property>
 		<property name="username" value="koo"></property>
 		<property name="password" value="1234"></property>
 		<property name="driverClassName" value="core.log.jdbc.driver.OracleDriver"></property>
 	</bean>
+	
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="/WEB-INF/ibatis/sqlMapConfig.xml"/>
+	</bean>
+	
+	<bean id="sqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	
 	
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource"></property>

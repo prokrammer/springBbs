@@ -12,12 +12,14 @@ import javax.servlet.ServletException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.orm.ibatis.SqlMapClientTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.pknu.bbs.comment.CommentDto;
 import com.pknu.bbs.dto.BBSDto;
 import com.pknu.bbs.mapper.ContentRowMapper;
 import com.pknu.bbs.mapper.ListRowMapper;
+
 
 @Repository
 public class BBSDaoImpl implements BBSDao {
@@ -30,8 +32,33 @@ public class BBSDaoImpl implements BBSDao {
 	LoginDto logindto;
 	ArrayList<CommentDto> comArrayList;
 	StringBuffer query;
+	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	SqlMapClientTemplate smct;
+	
+	@Override
+	public int getTotalCount() {
+//		return (Integer)smct.queryForObject("getArticleCount");
+		return (int)smct.queryForObject("getArticleCount");
+	}
+	
+	/*public int getTotalCount() throws SQLException {
+		con = odbc.getConnection();
+		String sql = "SELECT COUNT(*) FROM BBS";
+		pstmt = con.prepareStatement(sql);
+		rs = pstmt.executeQuery();
+		int totalCount = 0;
+		
+		if(rs.next()) {
+			totalCount = rs.getInt(1);
+		}
+		streamClose();
+		return totalCount;
+		return jdbcTemplate.queryForObject("select count(*) from bbs", Integer.class);
+	}*/
 	
 	public List<BBSDto> getArticleList(int startRow, int endRow){
 		StringBuffer sql = new StringBuffer(); 
@@ -45,63 +72,9 @@ public class BBSDaoImpl implements BBSDao {
 		
 		return jdbcTemplate.query(sql.toString(), new Object[]{startRow,endRow}, new ListRowMapper());
 	}
-	/*public ArrayList<BBSDto> getArticleList(int startRow, int endRow) throws SQLException {
-		con = odbc.getConnection();
-		StringBuffer sql = new StringBuffer(); 
-		sql.append("select obbs.* ");
-		sql.append("from (select rownum rum, ibbs.* ");
-		sql.append("	  from (select article_num,id,title,depth,hit,write_date ");
-		sql.append("			from bbs ");
-		sql.append("			order by group_id desc, pos) ibbs ");
-		sql.append(") obbs ");
-		sql.append("where rum between ? and ? ");
-		
-		pstmt = con.prepareStatement(sql.toString());
-		pstmt.setInt(1, startRow);
-		pstmt.setInt(2, endRow);
-		rs = pstmt.executeQuery();
-		bdtoArrayList = new ArrayList<>();
-//		System.out.println(rs);
-		
-		while(rs.next()) {
-			BBSDto bbsd = new BBSDto();
-			bbsd.setArticleNum(rs.getInt("article_num"));
-			bbsd.setId(rs.getString("id"));
-			bbsd.setTitle(rs.getString("title"));
-			bbsd.setDepth(rs.getInt("depth"));
-			bbsd.setHit(rs.getInt("hit"));
-			bbsd.setWriteDate(rs.getTimestamp("write_date"));
-			bdtoArrayList.add(bbsd);
-//			bbsd.setContent(rs.getString("content"));
-//			bbsd.setGroupid(rs.getInt("group_id"));
-//			bbsd.setPos(rs.getInt("pos"));
-//			bbsd.setFname(rs.getString("fname"));
-//			System.out.println(bbsd);
-			bbsd.setCommentCount(commentsCount(bbsd.getArticleNum()));
-		}
-//		System.out.println(bdtoArrayList);
-		streamClose();		
-		return bdtoArrayList;
-	}*/
+	
 	public void write(BBSDto article) throws ServletException, IOException{
-/*		con = odbc.getConnection();
-		
-		BBSDto bsd = article; 
-		String sql = "insert into bbs values(ARTICLE_NUM_SEQUENCE.NEXTVAL,?,?,?,0,0,ARTICLE_NUM_SEQUENCE.CURRVAL,0,sysdate,?)";
-		int result;
-		try {
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, bsd.getId());
-			pstmt.setString(2, bsd.getTitle());
-			pstmt.setString(3, bsd.getContent());
-			pstmt.setString(4, bsd.getFname());
-			
-			result = pstmt.executeUpdate();
-			System.out.println(result + "행이 입력되었습니다.");
-			streamClose();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}*/
+
 		query= new StringBuffer();		
 		
 		query.append("INSERT INTO BBS ");	
@@ -112,39 +85,10 @@ public class BBSDaoImpl implements BBSDao {
 									article.getContent(),article.getFname()});
 	}
 	
-	public int getTotalCount() throws SQLException {
-		/*con = odbc.getConnection();
-		String sql = "SELECT COUNT(*) FROM BBS";
-		pstmt = con.prepareStatement(sql);
-		rs = pstmt.executeQuery();
-		int totalCount = 0;
-		
-		if(rs.next()) {
-			totalCount = rs.getInt(1);
-		}
-		streamClose();
-		return totalCount;*/
-		return jdbcTemplate.queryForObject("select count(*) from bbs", Integer.class);
-	}
+	
 
 	public int loginCheck(String id, String pass) throws SQLException {
-		/*con = odbc.getConnection();
-		String sql = "SELECT pass FROM login WHERE id = ? ";
-		pstmt = con.prepareStatement(sql);
-		pstmt.setString(1, id);
-		rs = pstmt.executeQuery();
-		int result = 0;
-		if(rs.next()) {
-			if(pass.equals(rs.getString("pass"))) {
-					result = LoginStatus.LOGIN_SUCCESS;
-			} else {
-				result = LoginStatus.LOGIN_FAIL;
-			}
-		} else {
-			result = LoginStatus.LOGIN_NOTFOUNDID;
-		}
-		streamClose();
-		return result;*/
+
 		StringBuffer query= new StringBuffer();
 		query.append("SELECT PASS FROM LOGIN WHERE ID=? ");
 		int loginStatus =0;
@@ -171,50 +115,7 @@ public class BBSDaoImpl implements BBSDao {
 		return jdbcTemplate.queryForObject(query.toString(), new Object[]{articleNum}, 
 				new ContentRowMapper());
 	}	
-	/*public BBSDto getContent(String articleNum) throws SQLException{
-		con = odbc.getConnection();
-		StringBuffer sql = new StringBuffer();
-		sql.append("SELECT * FROM bbs WHERE article_num = ?");
-		pstmt = con.prepareStatement(sql.toString());
-		pstmt.setString(1, articleNum);
-		rs = pstmt.executeQuery();
-		BBSDto bbsd = new BBSDto();
-		if(rs.next()) {
-			bbsd.setArticleNum(rs.getInt("article_num"));
-			bbsd.setId(rs.getString("id"));
-			bbsd.setTitle(rs.getString("title"));
-			bbsd.setContent(rs.getString("content"));
-			bbsd.setDepth(rs.getInt("depth"));
-			bbsd.setHit(rs.getInt("hit"));
-			bbsd.setGroupId(rs.getInt("group_id"));
-			bbsd.setPos(rs.getInt("pos"));
-			bbsd.setWriteDate(rs.getTimestamp("write_date"));
-			bbsd.setFname(rs.getString("fname"));
-//			System.out.println(bbsd);
-		}
-		
-		
-		sql = new StringBuffer();
-		sql.append("SELECT COUNT(*) ");
-		sql.append("from comments ");
-		sql.append("where articlenum=?");
-		pstmt=con.prepareStatement(sql.toString());
-		pstmt.setString(1, articleNum);
-		
-		rs = pstmt.executeQuery();
-		if(rs.next()) {
-			bbsd.setCommentCount(rs.getInt(1));
-		}
-		
-		
-		streamClose();
-		return bbsd;
-		StringBuffer sql = new StringBuffer();
-		sql.append("SELECT * FROM bbs WHERE article_num = ?");
-		return (BBSDto) jdbcTemplate.queryForObject(sql.toString(), new Object[]{articleNum}, new ContentRowMapper());
-		
-	}*/
-
+	
 	public void reply(BBSDto article) throws SQLException{
 con = odbc.getConnection();
 
