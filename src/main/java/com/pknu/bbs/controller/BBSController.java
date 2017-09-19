@@ -70,7 +70,7 @@ public class BBSController {
 		return "redirect:list.bbs?pageNum=1";
 	}
 	
-	@RequestMapping(value="write.bbs", method=RequestMethod.GET)
+	@RequestMapping(value="/write.bbs", method=RequestMethod.GET)
 	public String writeForm(HttpSession session, HttpServletRequest req) {
 		if((String)session.getAttribute("id")==null){
 			req.setAttribute("pageNum", "1");

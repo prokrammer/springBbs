@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import com.pknu.bbs.comment.CommentDto;
 import com.pknu.bbs.dto.BBSDto;
+import com.pknu.bbs.mapper.ContentRowMapper;
 import com.pknu.bbs.mapper.ListRowMapper;
 
 @Repository
@@ -162,8 +163,15 @@ public class BBSDaoImpl implements BBSDao {
 			
 		return loginStatus;
 	}
-
-	public BBSDto getContent(String articleNum) throws SQLException{
+	
+	@Override
+	public BBSDto getContent(String articleNum) {		
+		StringBuffer query= new StringBuffer();
+		query.append("SELECT * FROM bbs WHERE article_num=? ");
+		return jdbcTemplate.queryForObject(query.toString(), new Object[]{articleNum}, 
+				new ContentRowMapper());
+	}	
+	/*public BBSDto getContent(String articleNum) throws SQLException{
 		con = odbc.getConnection();
 		StringBuffer sql = new StringBuffer();
 		sql.append("SELECT * FROM bbs WHERE article_num = ?");
@@ -201,7 +209,11 @@ public class BBSDaoImpl implements BBSDao {
 		
 		streamClose();
 		return bbsd;
-	}
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT * FROM bbs WHERE article_num = ?");
+		return (BBSDto) jdbcTemplate.queryForObject(sql.toString(), new Object[]{articleNum}, new ContentRowMapper());
+		
+	}*/
 
 	public void reply(BBSDto article) throws SQLException{
 con = odbc.getConnection();
