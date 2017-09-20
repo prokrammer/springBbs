@@ -2,8 +2,6 @@ package com.pknu.bbs.common;
 
 import java.util.HashMap;
 
-import javax.inject.Named;
-
 import org.springframework.stereotype.Component;
 //@Named
 @Component
@@ -24,7 +22,7 @@ public class Page {
 	
 	
 	public synchronized HashMap<String, String> paging(int pageNum, int totalCount, int pageSize, int pageBlock){
-		HashMap<String, String> pagingValue = new HashMap();
+		HashMap<String, String> pagingValue = new HashMap<String, String>();
 		
 		int totalPage = (int) Math.ceil((double)totalCount/pageSize);
 		startRow = (pageNum - 1) * pageSize+1;

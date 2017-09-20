@@ -1,6 +1,5 @@
 package com.pknu.bbs.service;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,10 +41,8 @@ public class BBSServiceImpl implements BBSService {
 			pagingMap = page.paging(pageNum, totalCount, pageSize, pageBlock);
 			articleList = (ArrayList<BBSDto>)bbsDao.getArticleList(page.getStartRow(),page.getEndRow());
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		model.addAttribute("totalCount",totalCount);

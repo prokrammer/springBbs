@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,6 @@ import org.springframework.ui.Model;
 
 import com.pknu.bbs.dao.BBSDao;
 import com.pknu.bbs.dto.BBSDto;
-import com.pknu.bbs.login.BBSLogin;
 @Service
 public class BBSContentImpl implements BBSContent {
 	
@@ -21,13 +19,11 @@ public class BBSContentImpl implements BBSContent {
 	
 	@Override
 	public void content(String pageNum, String articleNum, Model model) {
-		StringBuffer view = new StringBuffer();
 		BBSDto bbsdto = new BBSDto();
 		try {
 			bbsdto = bbsdao.getContent(articleNum);
 			model.addAttribute("article", bbsdto);
 		} catch (NumberFormatException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		model.addAttribute("article", bbsdto);
@@ -51,7 +47,6 @@ public class BBSContentImpl implements BBSContent {
 		try {
 			article=bbsdao.getUpdateArticle(articleNum);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		model.addAttribute("article", article);
@@ -63,7 +58,6 @@ public class BBSContentImpl implements BBSContent {
 		try {
 			bbsdao.getUpdateArticle(articleNum,title,content);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
