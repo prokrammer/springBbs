@@ -2,7 +2,6 @@ package com.pknu.bbs.dao;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -22,7 +21,7 @@ public interface BBSDao {
 	
 	String join(String id, String pass) throws SQLException;
 	
-	ArrayList<CommentDto> getComments(String articleNum, String commentRow) throws SQLException;
+	List<CommentDto> getComments(String articleNum, String commentRow) throws SQLException;
 	
 	void writeContent(String id, String articleNum, String content);
 	
@@ -33,5 +32,7 @@ public interface BBSDao {
 	void getUpdateArticle(String articleNum, String title, String content) throws SQLException;
 	
 	void reply(BBSDto article) throws SQLException;
+
+	int loginCheck(String id, String pass) throws SQLException;
 	
 }

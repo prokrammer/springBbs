@@ -3,7 +3,7 @@ package com.pknu.bbs.comment;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +24,7 @@ public class BBSCommentImpl implements BBSComment{
 	public void read(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	String articleNum = req.getParameter("articleNum");
 	String commentRow = req.getParameter("commentRow");
-	ArrayList<CommentDto> commentList = null;
+	List<CommentDto> commentList = null;
 	try {
 		commentList = bbsdao.getComments(articleNum,commentRow);
 	} catch (Exception e) {
@@ -43,7 +43,7 @@ public class BBSCommentImpl implements BBSComment{
 		String id = (String) req.getSession().getAttribute("id");
 		System.out.println("라이트임플");
 		bbsdao.writeContent(id, articleNum, content);
-		ArrayList<CommentDto> commentList = null;
+		List<CommentDto> commentList = null;
 		try {
 			commentList = bbsdao.getComments(articleNum, "10");
 		} catch (SQLException e) {

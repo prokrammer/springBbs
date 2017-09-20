@@ -4,11 +4,11 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.pknu.bbs.dao.BBSDao">
-	<select id="getTotalCount" resultType="int">
+    <select id="getTotalCount" resultType="int">
 		select count(*) from bbs
 	</select>
-	
-	<select id="getArticleList" parameterType="HashMap" resultType="article">
+
+    <select id="getArticleList" parameterType="HashMap" resultType="article">
 		select obbs.* 
 		from (select rownum rum, ibbs.*  
 		from (select article_num articleNum,id,title,depth,hit,write_date writeDate  
@@ -17,4 +17,55 @@
 		) obbs 
 		where rum between #{startRow} and #{endRow} 
 	</select>
+    <select id="login" parameterType="String" resultType="String">
+		SELECT PASS FROM LOGIN WHERE ID=#{id}
+	</select>
+    <insert id="write">
+        INSERT INTO BBS values(ARTICLE_NUM_SEQUENCE.NEXTVAL,#{id},#{title},#{content},0,0,ARTICLE_NUM_SEQUENCE.CURRVAL,0,sysdate,#{fname})
+    </insert>
+    <select id="getContent" parameterType="String" resultType="article">
+			SELECT article_num articleNum, id, title, content, depth, 
+				   hit, group_id groupId, pos, write_date writeDate, fname 
+			FROM bbs 
+			WHERE article_num=#{articleNum}
+	</select>
+    <update id="posUpdate">
+        update bbs set pos = pos + 1 where pos > #{pos} and group_id = #{groupId}
+    </update>
+    <insert id="reply" parameterType="article">
+        insert into bbs values(ARTICLE_NUM_SEQUENCE.NEXTVAL,#{id},#{title},#{content},#{depth} + 1,0,#{groupId},#{pos} + 1,sysdate,#{fname})
+    </insert>
+
+    <delete id="deleteArticle" parameterType="String">
+        delete from bbs where article_num = #{articleNum}
+    </delete>
+    <select id="getUpdateArticle" parameterType="String" resultType="article">
+		SELECT TITLE, CONTENT, ARTICLE_NUM articleNum FROM BBS WHERE ARTICLE_NUM=#{articleNum}
+		</select>
+    <update id="updateArticle" parameterType="HashMap">
+        update bbs set title = #title#, content = #content# where article_Num = #articleNum#
+    </update>
+
+    <select id="joinCheck" parameterType="String" resultType="String">
+		select id from login where id = #{id}
+	</select>
+    <insert id="join">
+        insert into login values(#{id},#{pass})
+    </insert>
+    
+    <select id="commentsCount" parameterType="Integer" resultType="Integer">
+    	select count(*) from comments where articlenum = #{articleNum}
+    </select>
+    
+    <insert id="writeContent" parameterType="HashMap">
+    	insert into comments values(comment_seq.nextval,#{id},#{content},sysdate,#{articleNum})
+    </insert>
+    <select id="getComments" parameterType="HashMap" resultType="comment">
+    select ocom.* 
+from (select rownum rum, icom.* 
+from (select * from comments) icom 
+where articleNum = #{articleNum} 
+order by rum) ocom 
+where rum between 1 and #{commentRow} 
+    </select>
 </mapper>
