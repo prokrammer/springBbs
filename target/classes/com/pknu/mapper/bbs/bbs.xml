@@ -43,7 +43,7 @@
 		SELECT TITLE, CONTENT, ARTICLE_NUM articleNum FROM BBS WHERE ARTICLE_NUM=#{articleNum}
 		</select>
     <update id="updateArticle" parameterType="HashMap">
-        update bbs set title = #title#, content = #content# where article_Num = #articleNum#
+        update bbs set title = #{title}, content = #{content} where article_Num = #{articleNum}
     </update>
 
     <select id="joinCheck" parameterType="String" resultType="String">

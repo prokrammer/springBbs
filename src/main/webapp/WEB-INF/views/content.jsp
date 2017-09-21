@@ -59,7 +59,7 @@ function getComment(commPageNum, event){
 }
 
 function showHtml(data,commPageNum){	
-	let html="<table border='1' width='500' align='center'>";
+	let html="<table class = 'table' align='center' >";
 	$.each(data, function(index,item){
 		let localDate = new Date(item.commentDate);	
 		let presentDay = item.commentDate;
@@ -90,9 +90,19 @@ function showHtml(data,commPageNum){
 	$("#commentContent").focus();
 }
 </script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 </head>
 <body> 
-
+<div class="col-md-3 col-sm-2"></div>
+<div class="col-md-6 col-sm-8">
 ${pageNum }<br/>
 뎁스 : ${depth }<br/>
 그룹아이디 : ${groupId }<br/>
@@ -102,7 +112,7 @@ ${pageNum }<br/>
     <input type="hidden" name="depth" value="${article.depth}">
     <input type="hidden" name="pos" value="${article.pos}">
     <input type="hidden" name="groupId" value="${article.groupId}">
-	<table border="1" width="500" align="center">  
+	<table class = "table table-bordered" border="1" width="500" align="center">  
 		<tr>
  			 <td width="40">글쓴이</td> <td width="100">${article.id}</td> 			 
  			 <td width="40">조회수</td> <td width="100">${article.hit}</td>
@@ -161,12 +171,16 @@ ${pageNum }<br/>
 	 </table>		 	
 	</form>
 	<form>
+	
+	
 	<div>
 		<div id="showComment" align="center">
 		</div>
 		<input type="hidden" id="commPageNum" value="1">
+	</div>
 	</div>	
 	</form>
-	
+
+
 </body>
 </html>

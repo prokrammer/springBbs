@@ -14,6 +14,18 @@
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 	</properties>
 	<dependencies>
+<!-- 		Bootstrap -->
+<dependency>
+    <groupId>org.webjars.bower</groupId>
+    <artifactId>bootstrap</artifactId>
+    <version>3.3.7</version>
+</dependency>
+<!-- Jquery -->
+<dependency>
+    <groupId>org.webjars.bower</groupId>
+    <artifactId>jquery</artifactId>
+    <version>3.2.1</version>
+</dependency>
 		<!-- Spring -->
 		<dependency> <groupId>commons-fileupload</groupId> <artifactId>commons-fileupload</artifactId> <version>1.2.1</version> </dependency> <dependency> <groupId>commons-io</groupId> <artifactId>commons-io</artifactId> <version>1.4</version> </dependency> 
 

@@ -1,28 +1,54 @@
-<!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
- 
+<!DOCTYPE html> 
 <html>  
 <head>
 <meta charset="utf-8">
 <title>게시판</title> 
+<!-- <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/dist/css/bootstrap.min.css"> -->
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <style>
-	table tr td a{
+	#listTitle{
+		font-size: 20px;
+	}
+	.write {
+		float:right;
+	}
+	.write a{
 		text-decoration: none;
 	}
-	table tr td a:visited {
-		color: navy;
-		
+	.table tr:hover:first-child{
+		background-color : #fff;
+		color : #000; 
 	}
-	.list{
-		border:1px solid black;
+	.table tr:hover:last-child{
+		background-color : #fff;
+		color : #000; 
+	}
+	.table tr:hover{
+		background-color : #000;
+		color : #fff;
+	}
+	.table tr:hover a{
+		color : #fff;
+	}
+	.textleft{
+	text-align: left;
 	}
 </style>
 </head>
 
 <body>
-
+<div class="col-md-2 col-sm-1"></div>
+<div class="col-md-8 col-sm-10">
 <c:if test="${result!=null}">
 	<script>
 		alert($("{result}"));
@@ -35,17 +61,16 @@
  <c:if test="${id==null}">
  	<%@include file="login.jsp" %>
  </c:if>
- 
-
-<center><b>글목록(전체 글:${totalCount})</b>
-<table width="700" >
+ <br/>
+ <br/>
+<center><b id="listTitle">글목록(전체 글:${totalCount})</b>
+<table  class="write">
   <tr>
     <td align="right" >
        <a href="/bbs/write.bbs">글쓰기</a>
     </td>
   </tr>
 </table>
-
 <%-- <c:if test="${totalCount == 0}"> --%>
 <!-- <table width="700" border="1" cellpadding="0" cellspacing="0"> -->
 <!--   <tr> -->
@@ -56,7 +81,7 @@
 <!-- </table> -->
 <%-- </c:if> --%>
 
-<table class="list" border="1" width="700" cellpadding="2" cellspacing="2" align="center"> 
+<table class="table" width="700" cellpadding="2" cellspacing="2" align="center"> 
     <tr height="30" > 
       <td align="center"  width="50"  >번 호</td> 
       <td align="center"  width="250" >제   목</td> 
@@ -70,7 +95,7 @@
     <td align="center"  width="50" >
 	  <c:out value="${article.articleNum}"/>	   
 	</td>
-    <td  width="250" >  
+    <td class ="textleft" width="250" >  
       <c:if test="${article.depth > 0}">
 	  	<img src="images/image3.png" width="${10 * article.depth}"  height="16">
 	    <img src="images/cut.gif">
@@ -99,5 +124,9 @@
   </tr>
 </table>
 </center>
+</div>
+<!-- <script src="/webjars/bootstrap/3.3.7/dist/js/bootstrap.min.js"></script> -->
+<!-- <script src="/webjars/jquery/3.2.1/dist/jquery.min.js"></script> -->
+
 </body>
 </html>

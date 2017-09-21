@@ -5,30 +5,40 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>답글쓰기</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body> 
 뎁스:${replyDto.depth }<br>
 포지션:${replyDto.pos }<br>
 페이지넘:${pageNum }<br>
-그룹아이디:${replyDto.groupId }
-
+그룹아이디:${replyDto.groupId }<br>
+<div class="col-md-3 col-sm-2"></div>
+<div class="col-md-6 col-sm-8">
+<center>
 <form action="/bbs/reply.bbs" method="post">
 	<input type="hidden" name="pageNum" value="${pageNum}">                 
     <input type="hidden" name="depth" value="${replyDto.depth}">
     <input type="hidden" name="pos" value="${replyDto.pos}">
     <input type="hidden" name="groupId" value="${replyDto.groupId}">
-	<table border="2" width="200">  
+	<table border="2" class = "table table-bordered">  
 		<tr>
  			 <td>글쓴이 :</td>
  			 <td>${id}</td>
  		</tr>
  		<tr>	 
 		 <td>제목 : </td>
-		 <td><input type="text" name="title" value="[Re]"></td>			 
+		 <td><input style="width: 100%" type="text" name="title" value="[Re]"></td>			 
 		</tr>
 		<tr>
 		  <td colspan="2">
-		  <textarea cols="50" rows="20" name="content" ></textarea>
+		  <textarea style="width: 100%" rows="20" name="content" ></textarea>
 		  </td>
 	    </tr> 	    
 	    <tr>
@@ -42,5 +52,7 @@
 	    </tr>		
 	</table>	
 </form>
+</center>
+</div>
 </body>
 </html>
