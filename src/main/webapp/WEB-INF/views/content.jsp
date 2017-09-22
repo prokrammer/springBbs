@@ -127,7 +127,7 @@ ${pageNum }<br/>
 			<a href="/bbs/download.bbs?fname=${article.fname}">${article.fname}</a></td>
 		 </tr>					
 		 <tr>			 
-			  <td colspan="4"><xmp>${article.content}</xmp></td>
+			  <td colspan="4" ><xmp>${article.content}</xmp></td>
 	     </tr> 	
 	          
 	     <tr>

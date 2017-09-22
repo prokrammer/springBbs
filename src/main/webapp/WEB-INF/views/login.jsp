@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
 <html>
 <head>
 <meta charset="utf-8">
@@ -22,6 +21,15 @@
 	table{
 	text-align: center;
 	}
+	.center{
+		display: table; margin-left: auto; margin-right: auto;
+		margin-top: auto;
+		margin-bottom: auto;
+	}
+	.center form{
+	display: block;
+	margin: 0 auto;
+	}
 </style>
 	<!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -34,7 +42,9 @@
 
 </head>
 <body>
-	<div class="right">
+<!-- 	<div class="right"> -->
+		<div class="center">
+	
 	<form action="/bbs/login.bbs" method="post" id="loginForm">
 		<input type="hidden" name="pageNum" value="${pageNum}">
 		

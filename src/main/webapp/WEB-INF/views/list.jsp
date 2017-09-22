@@ -25,6 +25,9 @@
 	.write a{
 		text-decoration: none;
 	}
+	.table tr{
+ 		transition:all 0.2s ease-in-out;
+	}
 	.table tr:hover:first-child{
 		background-color : #fff;
 		color : #000; 
@@ -32,6 +35,9 @@
 	.table tr:hover:last-child{
 		background-color : #fff;
 		color : #000; 
+	}
+	.table tr:hover:last-child a{
+		color : #337ab7; 
 	}
 	.table tr:hover{
 		background-color : #000;
@@ -43,11 +49,33 @@
 	.textleft{
 	text-align: left;
 	}
+	h1{
+    height: 143px;
+    background: url(/bbs/resources/1499917576465.jpeg) no-repeat;
+    background-size: 100% 143px;
+}
+h1 div{
+    font-size: 65px;
+    font-family: 'Droid Sans', sans-serif;
+    font-weight: normal;
+    text-transform: uppercase;
+    color: #fff;
+    float: right;
+    position: relative;
+    top:70px;
+    right: 10px;
+}
 </style>
 </head>
 
 <body>
+<div class="wrapper">
 <div class="col-md-2 col-sm-1"></div>
+<div class="col-md-8 col-sm-10"><h1><div>자유게시판</div></h1></div>
+<div class="col-md-2 col-sm-1"></div>
+<div style="clear: both;"></div>
+</div>
+<div class="col-md-2 col-sm-1"><img src="/bbs/resources/ceo.jpg"></div>
 <div class="col-md-8 col-sm-10">
 <c:if test="${result!=null}">
 	<script>
