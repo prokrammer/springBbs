@@ -21,15 +21,13 @@
 	table{
 	text-align: center;
 	}
-	.center{
-		display: table; margin-left: auto; margin-right: auto;
-		margin-top: auto;
-		margin-bottom: auto;
-	}
-	.center form{
-	display: block;
-	margin: 0 auto;
-	}
+/* 	.center{ */
+/* 		display: table; margin-left: auto; margin-right: auto; */
+/* 	} */
+/* 	.center form{ */
+/* 	display: block; */
+/* 	margin: 0 auto; */
+/* 	} */
 </style>
 	<!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -42,8 +40,8 @@
 
 </head>
 <body>
-<!-- 	<div class="right"> -->
-		<div class="center">
+	<div class="right">
+<!-- 		<div class="center"> -->
 	
 	<form action="/bbs/login.bbs" method="post" id="loginForm">
 		<input type="hidden" name="pageNum" value="${pageNum}">
@@ -52,7 +50,7 @@
 		<tr><td> I D  </td><td colspan="2"><input type="text" class="form-control" name="id" id="id"></td><td rowspan="2"><input class="btn btn-default login" type="submit" value="로그인"></td></tr>
 		<tr><td>PASS  </td><td colspan="2"><input type="password" class="form-control" name="pass" id="pass"></td></tr> 
 		<tr><td></td><td></td><td></td><td> 
-		<!-- <input class="btn btn-default btn-xs" type="reset" value="취소"> --><center><input class="btn btn-default btn-sm center join" type="button" value="회원가입" onclick="document.location.href='/bbs/joinForm.bbs'"></center></td></tr>
+		<!-- <input class="btn btn-default btn-xs" type="reset" value="취소"> --><input class="btn btn-default btn-sm center join" type="button" value="회원가입" onclick="document.location.href='/bbs/joinForm.bbs'"></td></tr>
 		</table>
 		
 		<!-- <label for="id"> I D : <input type="text" name="id" id="id"></label><br />
