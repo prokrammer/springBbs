@@ -17,8 +17,8 @@
 	</settings>
 	
 	<typeAliases>
-	    <typeAlias alias="article" type="com.pknu.bbs.dto.BBSDto"/> 
-	     <typeAlias alias="comment" type="com.pknu.bbs.comment.CommentDto" />         
+	    <typeAlias alias="article" type="com.pknu.bbs.bbs.dto.BBSDto"/> 
+	    <typeAlias alias="comment" type="com.pknu.bbs.comment.CommentDto"/>         
 	</typeAliases>
 	
 	<mappers>

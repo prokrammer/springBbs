@@ -14,7 +14,7 @@ import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pknu.bbs.dao.BBSDao;
+import com.pknu.bbs.bbs.dao.BBSDao;
 
 @Service
 public class BBSCommentImpl implements BBSComment{
