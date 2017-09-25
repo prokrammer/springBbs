@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -12,6 +13,7 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 </head>
 <body>
 <div class="col-md-3 col-sm-2"></div>
@@ -35,7 +37,8 @@
 			</tr>
 			<tr>
 				<td><input type="submit" value="수정하기"></td>
-				<td><input type="reset" value="수정하기취소"></td>
+<!-- 				<td><input id="back" type="reset" value="수정하기취소"></td> -->
+				<td><input type="reset" value="수정하기취소" onclick="history.back()"></td>
 			</tr>
 		</table>
 	</form>

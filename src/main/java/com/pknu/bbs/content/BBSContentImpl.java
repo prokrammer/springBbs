@@ -2,6 +2,7 @@ package com.pknu.bbs.content;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 
@@ -19,14 +20,17 @@ public class BBSContentImpl implements BBSContent {
 	
 	@Override
 	public void content(String pageNum, String articleNum, Model model) {
-		BBSDto bbsdto = new BBSDto();
+		BBSDto article = new BBSDto();
 		try {
-			bbsdto = bbsdao.getContent(articleNum);
-			model.addAttribute("article", bbsdto);
+			article = bbsdao.getContent(articleNum);
+			
+			article.setCommentCount((long)bbsdao.commentsCount(Integer.parseInt(articleNum)));
+			
+			model.addAttribute("article", article);
 		} catch (NumberFormatException | SQLException e) {
 			e.printStackTrace();
 		}
-		model.addAttribute("article", bbsdto);
+		model.addAttribute("article", article);
 		model.addAttribute("pageNum", pageNum);
 	}
 	
@@ -55,8 +59,13 @@ public class BBSContentImpl implements BBSContent {
 	@Override
 	public void update(Model model, String articleNum, String title, String content) throws ServletException, IOException {
 		
+		System.out.println(articleNum + title + content);
+		HashMap<Object,Object> paramMap = new HashMap<>();
+		paramMap.put("articleNum", articleNum);
+		paramMap.put("title",title);
+		paramMap.put("content", content);
 		try {
-			bbsdao.getUpdateArticle(articleNum,title,content);
+			bbsdao.getUpdateArticle(paramMap);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1,6 +1,7 @@
 package com.pknu.bbs.join;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,13 +18,18 @@ public class BBSJoinImpl implements BBSJoin {
 	@Override
 	public void join(Model model,String id, String pass) {
 		
-		String result = null;
-		try {
-			result = bbsdao.join(id, pass);
+		HashMap<Object, Object> paramMap = new HashMap<>();
+		
+		String result;
+		result = bbsdao.joinCheck(id);
+		if(result!=null) {
+			result="중복된 아이디 입니다.";
+		} else {
+			paramMap.put("id", id);
+			paramMap.put("pass", pass);
 			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			bbsdao.join(paramMap);
+			result = "회원가입이 되었습니다.";
 		}
 		model.addAttribute("result", result);
 		

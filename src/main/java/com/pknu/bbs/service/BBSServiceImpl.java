@@ -36,10 +36,26 @@ public class BBSServiceImpl implements BBSService {
 		ArrayList<BBSDto> articleList=null;
 		HashMap<String, String> pagingMap=null;
 		
+		
+		
+		
+		
 		try {
 			totalCount = bbsDao.getTotalCount();
+			
 			pagingMap = page.paging(pageNum, totalCount, pageSize, pageBlock);
-			articleList = (ArrayList<BBSDto>)bbsDao.getArticleList(page.getStartRow(),page.getEndRow());
+			
+			int startRow = page.getStartRow();
+			int endRow = page.getEndRow();
+			HashMap<Object,Object> paramMap = new HashMap<>();
+			paramMap.put("startRow", startRow);
+			paramMap.put("endRow", endRow);
+			
+			articleList = (ArrayList<BBSDto>)bbsDao.getArticleList(paramMap);
+			
+			for(BBSDto bbsdto:articleList) {
+				bbsdto.setCommentCount((long)bbsDao.commentsCount(bbsdto.getArticleNum()));
+			}
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

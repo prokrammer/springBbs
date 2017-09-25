@@ -24,8 +24,23 @@ public class BBSLoginImpl implements BBSLogin {
 		System.out.println(pageNum);
 		int result = 0;
 		String view = null;
-			
-		result = bbsDaoImpl.loginCheck(id, pass);
+		
+		
+		
+		int loginStatus =0;
+		String dbPass =bbsDaoImpl.loginCheck(id); 
+								
+		if(dbPass!=null){
+			if(pass.equals(dbPass)){
+				loginStatus=LoginStatus.LOGIN_SUCCESS;				
+			}else{
+				loginStatus=LoginStatus.LOGIN_FAIL;
+			}			
+		}else{
+			loginStatus=LoginStatus.LOGIN_NOTFOUNDID;
+		}		
+		result = loginStatus;	
+		
 		System.out.println(result);
 		if(result==LoginStatus.LOGIN_SUCCESS) {
 			req.getSession().setAttribute("id", id);

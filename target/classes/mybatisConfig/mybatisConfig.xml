@@ -23,6 +23,6 @@
 	
 	<mappers>
 	    <mapper resource="com/pknu/mapper/bbs/bbs.xml" />
-<!-- 	    <mapper resource="com/pknu/mapper/comment/comment.xml" /> -->
+	    <mapper resource="com/pknu/mapper/comment/comment.xml" />
 	</mappers>
 </configuration>

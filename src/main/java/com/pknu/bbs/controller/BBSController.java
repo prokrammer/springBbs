@@ -113,7 +113,7 @@ public class BBSController {
 		return "redirect:list.bbs?pageNum="+pageNum;
 	}
 	
-	@RequestMapping(value="/updateForm.bbs")
+	@RequestMapping(value="/update.bbs", method=RequestMethod.GET)
 	public String updateForm(String articleNum, String pageNum, Model model) {
 		model.addAttribute("articleNum", articleNum);
 		model.addAttribute("pageNum", pageNum);
@@ -125,7 +125,7 @@ public class BBSController {
 		return "updateForm";
 	}
 	
-	@RequestMapping(value="/update.bbs")
+	@RequestMapping(value="/update.bbs", method=RequestMethod.POST)
 	public String update(Model model, String pageNum, String articleNum, String title, String content) {
 		try {
 			bbscontent.update(model, articleNum, title, content);

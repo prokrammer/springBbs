@@ -135,7 +135,7 @@ ${pageNum }<br/>
 	    	  <td colspan="4" align="right">	    	
 	    	  <input type="submit" value="답글달기">
 	    	  <c:if test="${id ==article.id}">
-	    	  <input type="button" value="수정하기" onclick="document.location.href='/bbs/updateForm.bbs?articleNum=${article.articleNum}&pageNum=${pageNum}'">
+	    	  <input type="button" value="수정하기" onclick="document.location.href='/bbs/update.bbs?articleNum=${article.articleNum}&pageNum=${pageNum}'">
 	    	  <input type="button" value="삭제하기" onclick="document.location.href='/bbs/delete.bbs?articleNum=${article.articleNum}&pageNum=${pageNum}'">
 	    	  </c:if>
 	    	  <c:if test="${id !=article.id}">

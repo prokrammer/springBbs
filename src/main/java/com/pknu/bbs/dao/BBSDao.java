@@ -2,6 +2,7 @@ package com.pknu.bbs.dao;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -13,26 +14,32 @@ public interface BBSDao {
 
 	int getTotalCount();
 
-	List<BBSDto> getArticleList(int startRow, int endRow) throws SQLException;
+	List<BBSDto> getArticleList(HashMap<Object, Object> paramMap) throws SQLException;
 	
 	BBSDto getContent(String articleNum) throws SQLException;
 	
 	void write(BBSDto article) throws ServletException, IOException;
 	
-	String join(String id, String pass) throws SQLException;
+	void join(HashMap<Object,Object> paramMap);
 	
-	List<CommentDto> getComments(String articleNum, String commentRow) throws SQLException;
+	List<CommentDto> getComments(HashMap<Object,Object> paramMap) throws SQLException;
 	
-	void writeContent(String id, String articleNum, String content);
+	void writeContent(HashMap<Object,Object> paramMap);
 	
 	void delete(String articleNum) throws SQLException;
 	
 	BBSDto getUpdateArticle(String articleNum) throws SQLException;
 	
-	void getUpdateArticle(String articleNum, String title, String content) throws SQLException;
+	void getUpdateArticle(HashMap<Object,Object> paramMap) throws SQLException;
 	
-	void reply(BBSDto article) throws SQLException;
+	String loginCheck(String id) throws SQLException;
 
-	int loginCheck(String id, String pass) throws SQLException;
+	int commentsCount(int articleNum);
+
+	String joinCheck(String id);
+
+	void reply(HashMap<Object, Object> paramMap);
+
+	void reply(BBSDto article);
 	
 }

@@ -71,7 +71,7 @@ h1 div{
 <body>
 <div class="wrapper">
 <div class="col-md-2 col-sm-1"></div>
-<div class="col-md-8 col-sm-10"><h1><div>자유게시판</div></h1></div>
+<div class="col-md-8 col-sm-10"><h1 onclick="document.location.href='list.bbs?pageNum=1'"><div>자유게시판</div></h1></div>
 <div class="col-md-2 col-sm-1"></div>
 <div style="clear: both;"></div>
 </div>
