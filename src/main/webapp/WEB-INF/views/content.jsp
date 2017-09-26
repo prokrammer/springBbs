@@ -55,8 +55,8 @@ function getComment(commPageNum, event){
 		},
 // 			MappingJackson2JsonView를 이용할 때에는 Model에 심은 키값이 리턴되는 JSON데이터 앞에 키로 사용됨
 		success:function(data){
-// 			showHtml(data.commentList,commPageNum);
-			showHtml(data,commPageNum);
+			showHtml(data.commentList,commPageNum);
+// 			showHtml(data,commPageNum);
 		}				
 	}); 	
 }

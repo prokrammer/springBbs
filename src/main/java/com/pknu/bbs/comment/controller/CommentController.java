@@ -22,20 +22,20 @@ public class CommentController {
 	private CommentService commentService;
 	
 	
-	@RequestMapping(value="/commentRead.comment")
+	/*@RequestMapping(value="/commentRead.comment")
 	@ResponseBody
 	public List<CommentDto> commentRead(@RequestParam("articleNum") int articleNum, @RequestParam("commentRow") int commentRow) {
 		return commentService.getComments(articleNum, commentRow);
-	}
+	}*/
 	
 //	MappingJackson2JsonView를 이용하기
-/*	@RequestMapping(value="/commentRead.comment")
+	@RequestMapping(value="/commentRead.comment")
 	public String commentRead(@RequestParam("articleNum") int articleNum, @RequestParam("commentRow") int commentRow, Model model) {
 //		System.out.println("json");
 		model.addAttribute("commentList",commentService.getComments(articleNum, commentRow));
 //		System.out.println(commentService.getComments(articleNum, commentRow));
 		return "JSON";
-	}*/
+	}
 		
 	@RequestMapping(value="/commentWrite.comment")
 	public @ResponseBody HashMap<String, Object> commentWrite(CommentDto comment, HttpSession session) {

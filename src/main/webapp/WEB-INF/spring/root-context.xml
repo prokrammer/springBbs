@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<<<<<<< HEAD
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+=======
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+>>>>>>> parent of 080bca5... 4.0.2
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
 		<property name="location" value="classpath:db.properties" />
@@ -26,6 +31,28 @@
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">		
 		<constructor-arg ref="sqlSessionFactory"/>		
 	</bean>		
+<<<<<<< HEAD
+=======
+	
+	<bean class="org.mybatis.spring.mapper.MapperFactoryBean" id="bbsDao">
+		<property name="mapperInterface" value="com.pknu.bbs.bbs.dao.BBSDao"/>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	
+	<bean class="org.mybatis.spring.mapper.MapperFactoryBean" id="commentDao">
+		<property name="mapperInterface" value="com.pknu.bbs.comment.dao.CommentDao"/>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	
+<!-- ======================== -->
+
+	<bean id="pageSize" class="java.lang.Integer">
+		<constructor-arg><value>10</value></constructor-arg>
+	</bean>
+	<bean id="pageBlock" class="java.lang.Integer">
+		<constructor-arg value="10"></constructor-arg>
+	</bean>
+>>>>>>> parent of 080bca5... 4.0.2
 
 <mybatis-spring:scan base-package="com.pknu.bbs.bbs.dao, com.pknu.bbs.comment.dao"/>	
 <!-- 서블릿에서 스캔한 빈과 중복되어서 에러발생 -->
