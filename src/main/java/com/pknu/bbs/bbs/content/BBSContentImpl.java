@@ -69,7 +69,7 @@ public class BBSContentImpl implements BBSContent {
 		paramMap.put("title",title);
 		paramMap.put("content", content);
 		try {
-			bbsdao.getUpdateArticle(paramMap);
+			bbsdao.updateArticle(paramMap);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

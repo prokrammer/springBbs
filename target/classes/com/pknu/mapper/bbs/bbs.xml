@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper>
+<mapper namespace="com.pknu.bbs.bbs.dao.BBSDao">
     <select id="getTotalCount" resultType="int">
 		select count(*) from bbs
 	</select>
@@ -17,7 +17,7 @@
 		) obbs 
 		where rum between #{startRow} and #{endRow} 
 	</select>
-    <select id="login" parameterType="String" resultType="String">
+    <select id="loginCheck" parameterType="String" resultType="String">
 		SELECT PASS FROM LOGIN WHERE ID=#{id}
 	</select>
     <insert id="write">
@@ -41,7 +41,7 @@
         insert into bbs values(ARTICLE_NUM_SEQUENCE.NEXTVAL,#{id},#{title},#{content},#{depth} + 1,0,#{groupId},#{pos} + 1,sysdate,#{fname})
     </insert>
 
-    <delete id="deleteArticle" parameterType="String">
+    <delete id="delete" parameterType="String">
         delete from bbs where article_num = #{articleNum}
     </delete>
     <select id="getUpdateArticle" parameterType="String" resultType="article">

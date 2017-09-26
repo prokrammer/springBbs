@@ -40,7 +40,7 @@ public class ReplyImpl implements BBSReply {
 		paramMap.put("pos", article.getPos());
 		paramMap.put("groupId", article.getGroupId());
 		
-		bbsdao.reply(paramMap);
+		bbsdao.posUpdate(paramMap);
 		bbsdao.reply(article);
 	}
 

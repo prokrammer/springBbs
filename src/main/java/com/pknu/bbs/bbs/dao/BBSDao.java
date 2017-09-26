@@ -28,14 +28,14 @@ public interface BBSDao {
 	
 	BBSDto getUpdateArticle(String articleNum) throws SQLException;
 	
-	void getUpdateArticle(HashMap<Object,Object> paramMap) throws SQLException;
+	void updateArticle(HashMap<Object,Object> paramMap) throws SQLException;
 	
 	String loginCheck(String id) throws SQLException;
 
 
 	String joinCheck(String id);
 
-	void reply(HashMap<Object, Object> paramMap);
+	void posUpdate(HashMap<Object, Object> paramMap);
 
 	void reply(BBSDto article);
 	
