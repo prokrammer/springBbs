@@ -4,95 +4,43 @@
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-	
+
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
 		<property name="location" value="classpath:db.properties" />
 	</bean>	
-
+		
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="${driverClassName}" />
 		<property name="url" value="${url}" />
 		<property name="username" value="${username}" />
 		<property name="password" value="${password}" />
-	</bean>	
+	</bean>			
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"/>
+		<property name="dataSource" ref="dataSource"/>  
 		<property name="configLocation" value="classpath:/mybatisConfig/mybatisConfig.xml"/>
 		<property name="mapperLocations" value="classpath:/com/pknu/mapper/**/*.xml"></property>			
 	</bean>	
 	
-
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">		
 		<constructor-arg ref="sqlSessionFactory"/>		
 	</bean>		
-	<!-- 
-	<bean class="org.mybatis.spring.mapper.MapperFactoryBean" id="bbsDao">
-		<property name="mapperInterface" value="com.pknu.bbs.bbs.dao.BBSDao"/>
-		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
-	</bean>
-	
-	<bean class="org.mybatis.spring.mapper.MapperFactoryBean" id="commentDao">
-		<property name="mapperInterface" value="com.pknu.bbs.comment.dao.CommentDao"/>
-		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
-	</bean>
-	 -->
-	 
-<!-- ======================== -->
 
-	<bean id="pageSize" class="java.lang.Integer">
-		<constructor-arg><value>10</value></constructor-arg>
-	</bean>
-	<bean id="pageBlock" class="java.lang.Integer">
-		<constructor-arg value="10"></constructor-arg>
-	</bean>
+<mybatis-spring:scan base-package="com.pknu.bbs.bbs.dao, com.pknu.bbs.comment.dao"/>	
+<!-- 서블릿에서 스캔한 빈과 중복되어서 에러발생 -->
+<!-- 	<mybatis-spring:scan base-package="com.pknu.bbs"/>	 -->
 
 
-<!-- 	<bean id="saveDir" class="java.lang.String">
-		<constructor-arg value="d:\uploadKch\"></constructor-arg>
-	</bean>
-	스프링 2.5이후에 생성자 사용방법은 Deprecated 되었음
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<constructor-arg >
-			<list>
-				<value>jdbc:oracle:thin:@127.0.0.1:1521:XE</value>
-				<value>koo</value>
-				<value>1234</value>
-			</list>
-		</constructor-arg>
-	</bean>
-	DriverManagerDataSource는 커넥션 풀을 지원하지 않음. 개발이 끝나면 BasicDataSource로 바꾼다.
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:XE"></property>
-		<property name="username" value="koo"></property>
-		<property name="password" value="1234"></property>
-		<property name="driverClassName" value="core.log.jdbc.driver.OracleDriver"></property>
-	</bean>
-
 	
-	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
-		<property name="dataSource" ref="dataSource"/>
-		<property name="configLocation" value="/WEB-INF/ibatis/sqlMapConfig.xml"/>
-	</bean>
-	
-	<bean id="sqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
-		<property name="sqlMapClient" ref="sqlMapClient"/>
-	</bean>
-	
-	
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-		<property name="dataSource" ref="dataSource"></property>
-		<property name="dataSource">
-			<ref bean="dataSource"/>
-		</property>
-		생성자를 이용하여 DI하는 방법 
-		<constructor-arg ref="dataSource"></constructor-arg>
+	<bean id="pageSize" class="java.lang.Integer" >
 		<constructor-arg>
-			<ref bean="dataSource"/>
+			<value>10</value>
 		</constructor-arg>
-	</bean> 
+	</bean>
 	
- -->	
+	<bean id="pageBlock" class="java.lang.Integer">
+		<constructor-arg value="10"/>
+	</bean>
+	
 </beans>

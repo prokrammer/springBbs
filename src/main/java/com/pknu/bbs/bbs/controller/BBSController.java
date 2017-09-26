@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.pknu.bbs.bbs.content.BBSContent;
 import com.pknu.bbs.bbs.dto.BBSDto;
 import com.pknu.bbs.bbs.join.BBSJoin;
 import com.pknu.bbs.bbs.login.BBSLogin;
@@ -32,9 +29,6 @@ public class BBSController {
 	
 	@Autowired
 	private BBSLogin bbsLogin;
-	
-	@Autowired
-	private BBSContent bbscontent;
 	
 	@Autowired
 	private BBSWrite bbswrite;
@@ -95,13 +89,13 @@ public class BBSController {
 	@RequestMapping(value="/content.bbs")
 	public String content(@RequestParam("pageNum") String pageNum, 
 			@RequestParam String articleNum, Model model) {
-		bbscontent.content(pageNum, articleNum, model);
+		bbsService.content(pageNum, articleNum, model);
 		return "content";
 	}
 	@RequestMapping(value="/delete.bbs")
 	public String delete(String articleNum,String pageNum) {
 			try {
-				bbscontent.delete(articleNum);
+				bbsService.delete(articleNum);
 			} catch (ServletException | IOException e) {
 				e.printStackTrace();
 			}
@@ -114,7 +108,7 @@ public class BBSController {
 		model.addAttribute("articleNum", articleNum);
 		model.addAttribute("pageNum", pageNum);
 		try {
-			bbscontent.updateForm(articleNum, model);
+			bbsService.updateForm(articleNum, model);
 		} catch (ServletException | IOException e) {
 			e.printStackTrace();
 		}
@@ -124,7 +118,7 @@ public class BBSController {
 	@RequestMapping(value="/update.bbs", method=RequestMethod.POST)
 	public String update(Model model, String pageNum, String articleNum, String title, String content) {
 		try {
-			bbscontent.update(model, articleNum, title, content);
+			bbsService.update(model, articleNum, title, content);
 		} catch (ServletException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
