@@ -1,4 +1,4 @@
-package com.pknu.bbs.comment;
+package com.pknu.bbs.comment.dto;
 
 public class CommentDto {
 	private int commentNum;

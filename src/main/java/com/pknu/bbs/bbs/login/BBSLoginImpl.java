@@ -7,14 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pknu.bbs.bbs.dao.BBSDaoImpl;
+import com.pknu.bbs.bbs.dao.BBSDao;
 import com.pknu.bbs.bbs.dao.LoginStatus;
 
 @Service
 public class BBSLoginImpl implements BBSLogin {
 	
 	@Autowired
-	BBSDaoImpl bbsDaoImpl;
+	BBSDao bbsDao;
 	
 	@Override
 	public String loginCheck(HttpServletRequest req) throws SQLException {
@@ -28,7 +28,7 @@ public class BBSLoginImpl implements BBSLogin {
 		
 		
 		int loginStatus =0;
-		String dbPass =bbsDaoImpl.loginCheck(id); 
+		String dbPass =bbsDao.loginCheck(id); 
 								
 		if(dbPass!=null){
 			if(pass.equals(dbPass)){

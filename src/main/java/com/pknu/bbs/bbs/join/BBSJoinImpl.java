@@ -1,6 +1,5 @@
 package com.pknu.bbs.bbs.join;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;

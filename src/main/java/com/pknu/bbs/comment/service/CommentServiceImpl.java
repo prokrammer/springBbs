@@ -1,28 +1,36 @@
-package com.pknu.bbs.comment;
+package com.pknu.bbs.comment.service;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pknu.bbs.bbs.dao.BBSDao;
+import com.pknu.bbs.comment.dao.CommentDao;
+import com.pknu.bbs.comment.dto.CommentDto;
 
 @Service
-public class BBSCommentImpl implements BBSComment{
+public class CommentServiceImpl implements CommentService{
 	
 	@Autowired
-	BBSDao bbsdao;
+	private CommentDao commentDao;
 	
-	public void read(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@Override
+	public void insertComment(CommentDto comment) {
+		commentDao.insertComment(comment);
+	}
+
+	@Override
+	public List<CommentDto> getComments(int articleNum, int commentRow) {
+		HashMap<String,Integer> commentMap = new HashMap<>();
+		commentMap.put("articleNum", articleNum);
+		commentMap.put("commentRow", commentRow);
+		return commentDao.getComments(commentMap);
+	}
+
+
+
+/*	public void read(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	String articleNum = req.getParameter("articleNum");
 	String commentRow = req.getParameter("commentRow");
 	List<CommentDto> commentList = null;
@@ -31,7 +39,7 @@ public class BBSCommentImpl implements BBSComment{
 		paramMap.put("articleNum", articleNum);
 		paramMap.put("commentRow", commentRow);
 
-		commentList = bbsdao.getComments(paramMap);
+//		commentList = bbsdao.getComments(paramMap);
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
@@ -53,22 +61,22 @@ public class BBSCommentImpl implements BBSComment{
 		paramMap.put("content", content);
 		paramMap.put("articleNum", articleNum);
 		
-		bbsdao.writeContent(paramMap);
+//		bbsdao.writeContent(paramMap);
 		List<CommentDto> commentList = null;
-		try {
-
-			paramMap = new HashMap<>();
-			paramMap.put("articleNum", articleNum);
-			paramMap.put("commentRow", "10");
-
-			commentList = bbsdao.getComments(paramMap);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+//		try {
+//
+//			paramMap = new HashMap<>();
+//			paramMap.put("articleNum", articleNum);
+//			paramMap.put("commentRow", "10");
+//
+////			commentList = bbsdao.getComments(paramMap);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
 		resp.setCharacterEncoding("utf-8");
 		JSONArray jb = new JSONArray(commentList);
 		PrintWriter pw = resp.getWriter();
 		pw.println(jb.toString());
 		
-	}
+	}*/
 }

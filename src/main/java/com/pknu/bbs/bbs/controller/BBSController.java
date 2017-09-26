@@ -23,7 +23,6 @@ import com.pknu.bbs.bbs.login.BBSLogin;
 import com.pknu.bbs.bbs.reply.BBSReply;
 import com.pknu.bbs.bbs.service.BBSService;
 import com.pknu.bbs.bbs.write.BBSWrite;
-import com.pknu.bbs.comment.BBSComment;
 
 @Controller
 public class BBSController {
@@ -42,9 +41,6 @@ public class BBSController {
 	
 	@Autowired
 	private BBSJoin bbsjoin;
-	
-	@Autowired
-	private BBSComment bbscomment;
 	
 	@Autowired
 	private BBSReply bbsreply;
@@ -176,7 +172,7 @@ public class BBSController {
 		return view;
 	}
 	
-	@ResponseBody
+/*	@ResponseBody
 	@RequestMapping(value="/commentRead.bbs")
 	public String commentRead(HttpServletRequest req, HttpServletResponse resp) {
 		try {
@@ -201,10 +197,9 @@ public class BBSController {
 		}
 		return null;
 	}
-	
+	*/
 	@RequestMapping(value="/logout.bbs")
 	public String logout(HttpSession session, String pageNum) {
-		/*req.getSession().setAttribute("id", null);*/
 		session.invalidate();
 		return "redirect:list.bbs?pageNum="+pageNum;
 	}

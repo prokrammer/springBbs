@@ -13,12 +13,16 @@ import org.springframework.ui.Model;
 import com.pknu.bbs.bbs.common.Page;
 import com.pknu.bbs.bbs.dao.BBSDao;
 import com.pknu.bbs.bbs.dto.BBSDto;
+import com.pknu.bbs.comment.dao.CommentDao;
 
 @Service
 public class BBSServiceImpl implements BBSService {
 	@Autowired
 	BBSDao bbsDao;
 	
+//	@Autowired
+//	CommentDao commentDao;
+//	
 	@Autowired //type이 Page인 빈은 DI해준다
 	Page page;
 	
