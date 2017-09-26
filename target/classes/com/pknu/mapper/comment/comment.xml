@@ -3,7 +3,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<<<<<<< HEAD
 <mapper>
+=======
+<mapper namespace="com.pknu.bbs.CommentMapper">
+>>>>>>> e3f44750efff5337eddc99ad3cad63e387fc1ecc
 <!--     <select id="commentsCount" parameterType="Integer" resultType="Integer">
     	select count(*) from comments where articlenum = #{articleNum}
     </select> -->
