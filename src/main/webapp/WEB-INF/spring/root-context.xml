@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	
@@ -26,7 +28,7 @@
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">		
 		<constructor-arg ref="sqlSessionFactory"/>		
 	</bean>		
-	
+	<!-- 
 	<bean class="org.mybatis.spring.mapper.MapperFactoryBean" id="bbsDao">
 		<property name="mapperInterface" value="com.pknu.bbs.bbs.dao.BBSDao"/>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
@@ -36,7 +38,8 @@
 		<property name="mapperInterface" value="com.pknu.bbs.comment.dao.CommentDao"/>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
-	
+	 -->
+	 
 <!-- ======================== -->
 
 	<bean id="pageSize" class="java.lang.Integer">
