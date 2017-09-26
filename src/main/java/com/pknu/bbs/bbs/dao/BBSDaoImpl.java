@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.pknu.bbs.bbs.dto.BBSDto;
-import com.pknu.bbs.comment.CommentDto;
+import com.pknu.bbs.comment.dto.CommentDto;
 
 
 @Repository
@@ -86,18 +86,9 @@ public class BBSDaoImpl implements BBSDao {
 	public void join(HashMap<Object, Object> paramMap) {
 			seqSession.insert(nameSpace + ".join", paramMap);
 	}
-	
 	@Override
 	public int commentsCount(int articleNum) {
-		return seqSession.selectOne(commentSpace+".commentsCount", articleNum);
+		return seqSession.selectOne(nameSpace+".commentsCount", articleNum);
 	}
-	
-	@Override
-	public void writeContent(HashMap<Object, Object> paramMap) {
-		seqSession.insert(commentSpace+".writeContent",paramMap);
-	}
-	@Override
-	public List<CommentDto> getComments(HashMap<Object,Object> paramMap) throws SQLException{
-		return seqSession.selectList(commentSpace+".getComments", paramMap);
-	}
+
 }

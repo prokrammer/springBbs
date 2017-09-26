@@ -8,7 +8,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 
 import com.pknu.bbs.bbs.dto.BBSDto;
-import com.pknu.bbs.comment.CommentDto;
+import com.pknu.bbs.comment.dto.CommentDto;
 
 public interface BBSDao {
 
@@ -22,9 +22,7 @@ public interface BBSDao {
 	
 	void join(HashMap<Object,Object> paramMap);
 	
-	List<CommentDto> getComments(HashMap<Object,Object> paramMap) throws SQLException;
 	
-	void writeContent(HashMap<Object,Object> paramMap);
 	
 	void delete(String articleNum) throws SQLException;
 	
@@ -34,7 +32,6 @@ public interface BBSDao {
 	
 	String loginCheck(String id) throws SQLException;
 
-	int commentsCount(int articleNum);
 
 	String joinCheck(String id);
 
@@ -42,4 +39,6 @@ public interface BBSDao {
 
 	void reply(BBSDto article);
 	
+	int commentsCount(int articleNum);
+
 }

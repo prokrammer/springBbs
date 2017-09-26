@@ -29,6 +29,11 @@
 			FROM bbs 
 			WHERE article_num=#{articleNum}
 	</select>
+<!-- 	<select id="getContent" parameterType="String" resultType="article"> -->
+<!-- 			SELECT * -->
+<!-- 			FROM bbs  -->
+<!-- 			WHERE article_num=#{articleNum} -->
+<!-- 	</select> -->
     <update id="posUpdate" parameterType="article">
         update bbs set pos = pos + 1 where pos > #{pos} and group_id = #{groupId}
     </update>
@@ -53,4 +58,7 @@
         insert into login values(#{id},#{pass})
     </insert>
     
+    <select id="commentsCount" parameterType="Integer" resultType="Integer">
+    	select count(*) from comments where articlenum = #{articleNum}
+    </select>
 </mapper>

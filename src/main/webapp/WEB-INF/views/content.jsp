@@ -20,7 +20,7 @@ $.ajaxSetup({
 jQuery(function(){
 	$("#commentWrite").on("click",function(){
 		$.ajax({					
-			url:"/bbs/commentWrite.bbs",
+			url:"/bbs/commentWrite.comment",
 // 			data{}에서는 EL을 ""로 감싸야함..그외에는 그냥 사용
 			data:{				
 				commentContent:$("#commentContent").val(),
@@ -36,7 +36,8 @@ jQuery(function(){
 				/* if(data.result==1){ */
 					alert("comment가 정상적으로 입력되었습니다");
 					$("#commentContent").val("");
-					showHtml(data/* .commentList */,1);
+					getComment(1,event);
+					/* showHtml(data,1); */
 				/* } */
 			}			
 		}); 
@@ -46,20 +47,23 @@ jQuery(function(){
 function getComment(commPageNum, event){
 	//스크롤바 밑으로 내려가게 하기
 	$.ajax({			
-		url:"/bbs/commentRead.bbs",	
+		url:"/bbs/commentRead.comment",	
 		data:{
 			articleNum:"${article.articleNum}",
 // 			숫자와 문자연산에서 +를 제외하고는 숫자 우선
 			commentRow:commPageNum*10
 		},
+// 			MappingJackson2JsonView를 이용할 때에는 Model에 심은 키값이 리턴되는 JSON데이터 앞에 키로 사용됨
 		success:function(data){
-			showHtml(data,commPageNum);
+			showHtml(data.commentList,commPageNum);
+// 			showHtml(data,commPageNum);
 		}				
 	}); 	
 }
 
 function showHtml(data,commPageNum){	
-	let html="<table class = 'table' align='center' >";
+	let html="<table class = 'table' align='center' >"/* style='undefined; table-layout: fixed; width: 100%; overflow:hidden;'>"; */
+// 	let html+="<colgroup><col style='width: 132px;'><col style='width: 87px;'><col style='width: 67px;'><col style='width: 67px;'><col style='width: 81px;'></colgroup>";
 	$.each(data, function(index,item){
 		let localDate = new Date(item.commentDate);	
 		let presentDay = item.commentDate;
@@ -98,7 +102,12 @@ function showHtml(data,commPageNum){
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
+<style>
+    #comment{
+        width: 300px;
+        overflow: hidden;
+    }
+    </style>
 </head>
 <body> 
 <div class="col-md-3 col-sm-2"></div>

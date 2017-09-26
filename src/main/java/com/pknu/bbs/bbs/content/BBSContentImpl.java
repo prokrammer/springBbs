@@ -12,11 +12,15 @@ import org.springframework.ui.Model;
 
 import com.pknu.bbs.bbs.dao.BBSDao;
 import com.pknu.bbs.bbs.dto.BBSDto;
+import com.pknu.bbs.comment.dao.CommentDao;
 @Service
 public class BBSContentImpl implements BBSContent {
 	
 	@Autowired
 	BBSDao bbsdao;
+//	
+//	@Autowired
+//	CommentDao commentDao;
 	
 	@Override
 	public void content(String pageNum, String articleNum, Model model) {
@@ -70,5 +74,7 @@ public class BBSContentImpl implements BBSContent {
 			e.printStackTrace();
 		}
 	}
+	
+	
 	
 }
